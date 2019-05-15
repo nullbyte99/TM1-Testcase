@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Ti.Stats.Test",
+	"Code@Code.link":"Diag.Ti.Stats.Test.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pError",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

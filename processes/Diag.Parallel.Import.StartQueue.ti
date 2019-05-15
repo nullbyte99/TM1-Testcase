@@ -1,0 +1,211 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+platform = CellGetS ( 'diag.control.cube', 'platform', 'value' );
+queueDir = CellGetS ( 'diag.control.cube', 'queue directory', 'value' );
+queueFile = queueDir | 'queue.log';
+scriptDirectory = CELLGETS ( 'diag.control.cube', 'scripts directory', 'value' );
+vSlash = CELLGETS ( 'diag.control.cube', 'slash', 'value' );
+
+vNow = NumberToString( NOW );
+exportDir = CellGETS('diag.control.cube', 'export directory', 'value') | vNow | vSlash;
+
+vImportDirectory = CELLGETS ( 'diag.control.cube', 'last export', 'value' );
+
+
+vUser = CELLGETS ( 'diag.control.cube', 'user', 'value' );
+vPassword = CELLGETS ( 'diag.control.cube', 'password', 'value' );
+vNamespace = CELLGETS ( 'diag.control.cube', 'namespace', 'value' );
+vDBName = CELLGETS ( 'diag.control.cube', 'model name', 'value' );
+vAdminHost = CELLGETS ( 'diag.control.cube', 'adminhost', 'value' );
+vInstallDir = CELLGETS ( 'diag.control.cube', 'install directory', 'value' );
+
+vChildProcess = 'Diag.Parallel.Import';
+
+vAuth = ' -user ' | vUser | ' -pwd ' | vPassword;
+IF ( vNamespace @<> '' );
+   vAuth = vAuth | ' -CAMNamespace ' | vNamespace;
+ENDIF;   
+
+
+IF ( platform @= 'WIN');
+   vDelCMD = 'del /S /Q ' | queueDir | '*';
+   ExecuteCommand ( 'cmd /c ' | vDelCMD  ,1); 
+ELSEIF ( platform @= 'IX' );
+   #ASCIIOUTPUT ( '../debug.txt', 'rm -rf ' | queueDir | '*'   );
+   ExecuteCommand ( 'rm -rf ' | queueDir | '*'  ,1); 
+ELSE;
+  ProcessQuit ();
+ENDIF;
+
+
+subsetName = 'l0Subset'; 
+IF ( SubsetExists ( pSplitDimension, subsetName ) = 1);
+   SubsetDestroy ( pSplitDimension, subsetName );
+ENDIF;
+SubsetCreate ( pSplitDimension, subsetName, 1 );
+
+elementIndex = 1;
+WHILE ( elementIndex <= DIMSIZ ( pSplitDimension ) );
+   IF ( ELLEV ( pSplitDimension, DIMNM ( pSplitDimension, elementIndex ) ) = 0  );
+       SubsetElementInsert ( pSplitDimension, subsetName, DIMNM ( pSplitDimension, elementIndex ), SubsetGetSize ( pSplitDimension, subsetName) + 1);
+   ENDIF;
+   elementIndex = elementIndex + 1;
+END;
+
+elementCount = DIMSIZ ( pSplitDimension );
+subsetIndexToQueue = 1;
+
+queueCount = 0;
+queue = '';
+queueSubStr = queue;
+
+WHILE ( subsetIndexToQueue <= SubsetGetSize( pSplitDimension, subsetName ) );
+   #Count number of elements in queue
+   queueSubStr = queue;
+   #ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+   queueCurrentSize = 0;
+  
+   delimPos = SCAN ( ',', queueSubStr );
+   IF ( SCAN ( ',', queue ) = 0 & queueSubStr @<> '' );
+      queueCurrentSize = 1;
+      #ASCIIOUTPUT ( queueFile, 'Found queued element: ' | queueSubStr );
+   ELSE;   
+      WHILE ( delimPos <> 0 );
+         #ASCIIOUTPUT ( queueFile, queueSubStr );
+         queuedElementName = SUBST ( queueSubStr, 1, delimPos -1 );
+         #ASCIIOUTPUT ( queueFile, 'Checking for file: ' | queueDir | queuedElementName | '.done' );
+         IF ( FileExists ( queueDir | queuedElementName | '.done' ) =1 );
+            #ASCIIOUTPUT ( queueFile, 'Found file ' | queuedElementName | '.done' );
+            elementIndexInQueue = SCAN ( queuedElementName, queue ); 
+            #ASCIIOUTPUT ( queueFile, 'Removing from queue ' | queuedElementName  );
+            queue =  DELET ( queue, elementIndexInQueue, LONG ( queuedElementName ) + 1 );     
+            queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) );   
+            #ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+         ELSE;             
+            queueCurrentSize = queueCurrentSize + 1;
+            queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) ); 
+         ENDIF;
+         delimPos = SCAN ( ',', queueSubStr );
+         IF ( delimPos = 0 );
+            #ASCIIOUTPUT ( queueFile, 'Checking for file: ' | queueDir | queueSubStr );
+            IF ( FileExists ( queueDir | queueSubStr ) =1 );
+                 #ASCIIOUTPUT ( queueFile, 'Found file ' | queueSubStr | '.done' );
+                 elementIndexInQueue = SCAN ( queueSubStr, queue ); 
+                 #ASCIIOUTPUT ( queueFile, 'Removing from queue ' | queueSubStr );
+                 queue =  DELET ( queue, elementIndexInQueue, LONG ( queueSubStr ) );     
+                 queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) );   
+                 #ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+            ELSE;             
+               queueCurrentSize = queueCurrentSize + 1;
+               queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) ); 
+            ENDIF;
+         ENDIF;
+       END;
+    ENDIF;
+    #ASCIIOUTPUT ( queueFile, NumberToString ( queueCurrentSize ) | ' items in queue'  );
+
+    # Adds more elements to the queue if the queue has less than the max number of members
+    IF ( queueCurrentSize < pQueueSize );
+       elementToQueue = SubsetGetElementName ( pSplitDimension, subsetName, subsetIndexToQueue );
+       #ASCIIOUTPUT ( queueFile, 'Adding to queue ' | elementToQueue );
+       IF ( queueCurrentSize = 0 );
+           queue = elementToQueue;
+       ELSE;
+            queue = queue | ',' |  elementToQueue;
+       ENDIF;
+
+
+       IF ( pUseRunProcess @= 'Y' );
+          vFileName = vImportDirectory | elementToQueue | '.csv';
+          RunProcess ( 'Diag.Parallel.Import', 'pCubeName', pCubeName, 'pFileName', vFileName, 'pElementName', elementToQueue, 'pClearData', pClearData );
+       ELSE;
+          IF ( platform @= 'WIN');
+              vCmd =  'cmd /c ' | vInstallDir | 'bin64\tm1runti.exe -adminhost ' | vAdminHost | ' -server ' | vDBName | vAuth | ' -process ' | vChildProcess | ' pCubeName=' | pcubeName | '  pSplitDimension=' | pSplitDimension | ' pElementName=' | elementToQueue | ' pExportDir=' | exportDir;
+              #ASCIIOUTPUT ( '../vcmd.txt', vCmd );
+              ExecuteCommand ( vCmd, 0 );
+          ELSEIF ( platform @= 'IX');
+              vCmd =  vInstallDir | 'bin64/tm1runti.exe -adminhost ' | vAdminHost | ' -server ' | vDBName | vAuth | ' -process ' | vChildProcess | ' pCubeName=' | pcubeName | '  pSplitDimension=' | pSplitDimension | ' pElementName=' | elementToQueue | ' pExportDir=' | exportDir;
+              #ASCIIOUTPUT ( '../vcmd.txt', vCmd );
+              ExecuteCommand ( vCmd, 0 );
+          ENDIF;
+      ENDIF;
+
+       subsetIndexToQueue = subsetIndexToQueue + 1;
+    ENDIF;
+
+END;
+
+
+WHILE ( queue @<> '');
+#Count number of elements in queue
+   queueSubStr = queue;
+   ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+   queueCurrentSize = 0;
+  
+   delimPos = SCAN ( ',', queueSubStr );
+   IF ( SCAN ( ',', queue ) = 0 & queueSubStr @<> '' );
+      queueCurrentSize = 1;
+      ASCIIOUTPUT ( queueFile, 'Found queued element: ' | queueSubStr );
+        IF ( FileExists ( queueDir | queueSubStr | '.done' ) =1 );
+           ASCIIOUTPUT ( queueFile, 'Found file ' | queueSubStr | '.done' );
+           queue = '';
+           queueSubStr = '';
+        ENDIF;
+   ELSE;   
+      WHILE ( delimPos <> 0 );
+         ASCIIOUTPUT ( queueFile, queueSubStr );
+         queuedElementName = SUBST ( queueSubStr, 1, delimPos -1 );
+         ASCIIOUTPUT ( queueFile, 'Found queued element: ' | queuedElementName );
+         IF ( FileExists ( queueDir | queuedElementName | '.done' ) =1 );
+            ASCIIOUTPUT ( queueFile, 'Found file ' | queuedElementName | '.done' );
+            elementIndexInQueue = SCAN ( queuedElementName, queue ); 
+            ASCIIOUTPUT ( queueFile, 'Removing from queue ' | queuedElementName  );
+            queue =  DELET ( queue, elementIndexInQueue, LONG ( queuedElementName ) + 1 );     
+            queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) );   
+            ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+         ELSE;             
+            queueCurrentSize = queueCurrentSize + 1;
+            queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) ); 
+         ENDIF;
+         delimPos = SCAN ( ',', queueSubStr );
+         IF ( delimPos = 0 );
+            ASCIIOUTPUT ( queueFile, 'Found queued element: ' | queueSubStr );
+            IF ( FileExists ( queueDir | queueSubStr ) =1 );
+                 ASCIIOUTPUT ( queueFile, 'Found file ' | queueSubStr | '.done' );
+                 elementIndexInQueue = SCAN ( queueSubStr, queue ); 
+                 ASCIIOUTPUT ( queueFile, 'Removing from queue ' | queueSubStr );
+                 queue =  DELET ( queue, elementIndexInQueue, LONG ( queueSubStr ) );     
+                 queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) );   
+                 ASCIIOUTPUT ( queueFile, 'Queue ' | queue );
+            ELSE;             
+               queueCurrentSize = queueCurrentSize + 1;
+               queueSubStr = SUBST ( queueSubStr, delimPos + 1, LONG ( queueSubStr ) ); 
+            ENDIF;
+         ENDIF;
+       END;
+    ENDIF;
+    ASCIIOUTPUT ( queueFile, NumberToString ( queueCurrentSize ) | ' items in queue'  );
+END;
+
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

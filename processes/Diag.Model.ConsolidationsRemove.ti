@@ -1,0 +1,40 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+elementCount = DIMSIZ ( pDimensionName );
+
+i = elementCount;
+WHILE ( i >= 1 );
+   elementName = DIMNM ( pDimensionName, i );
+   IF ( DTYPE ( pDimensionName, elementName) @= 'C' );
+      DimensionElementDelete ( pDimensionName, elementName );
+   ENDIF;
+   i = i - 1;
+END;
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

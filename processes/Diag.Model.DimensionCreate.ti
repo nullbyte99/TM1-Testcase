@@ -1,0 +1,55 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+IF(DimensionExists ( pDimensionName ) = 1);
+   DimensionDestroy ( pDimensionName );
+ENDIF; 
+DimensionCreate ( pDimensionName );
+
+DimensionNameLength = LONG ( pDimensionName );
+LongestElementNumberLength = LONG ( NumberToString ( pNumberOfElements ) );
+ElementNameHeader = UPPER ( SUBST ( pDimensionName, 1, pElementNameLength - LongestElementNumberLength ) );
+ElementNameHeaderLength = LONG ( ElementNameHeader );
+i = 1;
+WHILE ( i <= pNumberOfElements );
+   elementNumber = NumberToString( i );
+   zeroPadCount = pElementNameLength - ( ElementNameHeaderLength + LONG ( elementNumber ) );
+   zeroPadString = FILL ( '0', zeroPadCount );   
+   fullElementName = LOWER ( ElementNameHeader | zeroPadString | elementNumber );
+   DimensionElementInsert( pDimensionName, NumberToString(i), fullElementName, 'N' );
+   i = i + 1;
+END;
+
+IF ( pParentElement @= 'Y' );
+   DimensionTopElementInsert ( pDimensionName, DIMNM ( pDimensionName, 1 ), 'Total of ' | pDimensionName );
+ENDIF;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+IF ( pConsolidations @= 'Y' );
+   ExecuteProcess ( 'Diag.Model.ConsolidationsCreate', 'pDimensionName', pDimensionName, 'pLevel', 0, 'pLevelSize', pCSize, 'pMaxLevel', pCDepth );
+ENDIF;
+#endregion

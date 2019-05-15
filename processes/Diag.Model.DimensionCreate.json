@@ -1,0 +1,73 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.DimensionCreate",
+	"Code@Code.link":"Diag.Model.DimensionCreate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimensionName",
+			"Prompt":"Name of new dimension?",
+			"Value":"Test.Dimension.1",
+			"Type":"String"
+		},
+		{
+			"Name":"pNumberOfElements",
+			"Prompt":"Number of elements?",
+			"Value":100,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pElementNameLength",
+			"Prompt":"Length of element names?",
+			"Value":8,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDEBUG",
+			"Prompt":"Enable Debug Logging",
+			"Value":"F",
+			"Type":"String"
+		},
+		{
+			"Name":"pParentElement",
+			"Prompt":"Include Total Element",
+			"Value":"N",
+			"Type":"String"
+		},
+		{
+			"Name":"pLevels",
+			"Prompt":"",
+			"Value":3,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pLevelSize",
+			"Prompt":"",
+			"Value":10,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pConsolidations",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		},
+		{
+			"Name":"pCSize",
+			"Prompt":"",
+			"Value":5,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCDepth",
+			"Prompt":"",
+			"Value":2,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

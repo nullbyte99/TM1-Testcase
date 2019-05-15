@@ -1,0 +1,58 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+DatasourceType = 'CHARACTERDELIMITED';
+sourceFile = importDirectory | pDimension | '.elements';
+IF ( FileExists ( sourceFile ) = 0 );
+   PROCESSQUIT;
+ENDIF;
+DatasourceNameForServer = sourceFile;
+
+IF ( newDimensionName @= '' );
+   newDimensionName = pDimension;
+ENDIF;
+
+IF ( DimensionExists ( newDimensionName ) = 0); 
+   DimensionCreate ( newDimensionName );
+ELSE;
+   DimensionDeleteAllElements ( newDimensionName );
+ENDIF;
+
+DIMENSIONSORTORDER ( newDimensionName, 'BYINPUT', 'ASCENDING', 'BYINPUT', 'ASCENDING');
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( Parent @= Element );
+   DIMENSIONELEMENTINSERT ( newDimensionName, '', Element, 'n' );
+ENDIF;
+
+IF ( Parent @<> Element );
+   DIMENSIONELEMENTINSERT ( newDimensionName, '', Element, 'n' );
+   DIMENSIONELEMENTINSERT ( newDimensionName, '', Parent, 'c');
+   DIMENSIONELEMENTCOMPONENTADD ( newDimensionName, Parent, Element,1.000000);
+ENDIF;
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+IF ( includeAttributes @= 'Y' );
+   ExecuteProcess ( 'diag.import.attributes.dimension', 'pDimension', pDimension, 'importDirectory', importDirectory, 'newDimensionName', newDimensionName );
+   ExecuteProcess ( 'diag.import.attributes.cube', 'pDimension', pDimension, 'importDirectory', importDirectory, 'newDimensionName', newDimensionName );
+ENDIF;
+#endregion

@@ -1,0 +1,54 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+vNow = NumberToString( NOW );
+client = ATTRS ( '}Clients', TM1USER, '}TM1_DefaultDisplayValue' ); 
+div = SCAN ( '/', client );
+IF ( div > 0 );
+   client = DELET( client, div, 1 );
+   client = INSRT( '_', client, div );
+ENDIF;
+reportFileName = pReportDirectory | 'sandbox_delta_report_' | client | '_' |  vNow | '.log';
+
+#ASCIIOUTPUT ( reportFileName, '-- SANDBOX DETLA REPORT --' );
+#ASCIIOUTPUT ( reportFileName, '' );
+#ASCIIOUTPUT ( reportFileName, 'User: ' | client );
+#ASCIIOUTPUT ( reportFileName, '' );
+
+sandboxCount = ServerSandboxListCountGet ( TM1USER );
+i = 1;
+currentSandbox =  ServerSandboxGet ( i );
+WHILE ( currentSandbox @<> '' );
+    #ASCIIOUTPUT ( reportFileName, 'Sandbox: ' | currentSandbox );
+    j = 1;
+    cubeCount = DIMSIZ ( '}Cubes' );
+    currentCube = DIMNM ( '}Cubes', j );
+    WHILE ( j <= cubeCount );
+       IF ( SUBST ( currentCube, 1, 1 ) @<> '}');
+          ExecuteProcess ( '}stuart_sandbox_delta_compare', 'pCubeName', currentCube, 'pReportDirectory', pReportDirectory, 'pSandboxName', currentSandbox, 'pClient', client );
+       ENDIF;       
+       j = j + 1; 
+      currentCube = DIMNM ( '}Cubes', j );
+    END;
+    i = i + 1;   
+    currentSandbox =  ServerSandboxGet ( i );
+END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

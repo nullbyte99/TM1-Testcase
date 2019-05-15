@@ -1,0 +1,25 @@
+{
+	"@type":"Process",
+	"Name":"Diag.FindCubesUsingDimension",
+	"Code@Code.link":"Diag.FindCubesUsingDimension.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimensionName",
+			"Prompt":"",
+			"Value":"}Groups",
+			"Type":"String"
+		},
+		{
+			"Name":"pReportDirectory",
+			"Prompt":"",
+			"Value":"/app/ibm/cognos/tm1models/dev/report/",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

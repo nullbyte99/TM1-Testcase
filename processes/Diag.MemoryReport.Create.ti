@@ -1,0 +1,33 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+vnow  = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' );
+platform = CELLGETS ( 'diag.control.cube', 'platform', 'value' );
+slash = CELLGETS ( 'diag.control.cube', 'slash', 'value' );
+outputlDirectory = CELLGETS ( 'diag.control.cube', 'export directory', 'value' ) | vnow | slash;
+
+IF ( platform @= 'WIN' );
+   ExecuteCommand ( 'cmd /c mkdir ' | outputlDirectory, 1 ); 
+ELSEIF ( platform @= 'IX' );
+   ExecuteCommand ( 'mkdir ' | outputlDirectory, 1 );
+ENDIF;
+
+DebugUtility( 134, -2, 1, outputlDirectory | 'memoryReport.csv', '', '' );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

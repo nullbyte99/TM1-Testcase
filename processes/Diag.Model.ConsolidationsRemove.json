@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.ConsolidationsRemove",
+	"Code@Code.link":"Diag.Model.ConsolidationsRemove.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimensionName",
+			"Prompt":"",
+			"Value":"LargeDimension1",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

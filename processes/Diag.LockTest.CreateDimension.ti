@@ -1,0 +1,51 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+vExportFile = '../' | pDimensionName | '.d';
+
+index = 1;
+WHILE ( index <= pDimensionSize );
+   vElementName = 'E' | NumberToString ( index );
+   ASCIIOUTPUT ( vExportFile, vElementName );
+   index = index + 1;
+END;
+
+
+DataSourcetype='CHARACTERDELIMITED';
+DatasourceNameForServer=vExportFile;
+
+
+IF ( DimensionExists ( pDimensionName )  = 0 );
+   DimensionCreate ( pDimensionName );
+ELSE;
+   DimensionDeleteAllElements ( pDimensionName );
+ENDIF;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+DimensionElementInsert ( pDimensionName, '', v1, 'N' );
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+IF ( pSleep @= 'Y' );
+   Sleep ( 10000 );
+ENDIF;
+#endregion

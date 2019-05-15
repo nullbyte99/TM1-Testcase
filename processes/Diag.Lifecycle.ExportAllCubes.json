@@ -1,0 +1,25 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Lifecycle.ExportAllCubes",
+	"Code@Code.link":"Diag.Lifecycle.ExportAllCubes.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pOutputDirectory",
+			"Prompt":"",
+			"Value":"D:\\stuart\\models\\Testcase\\export\\TestExportCubes\\",
+			"Type":"String"
+		},
+		{
+			"Name":"pIncludeSecurity",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

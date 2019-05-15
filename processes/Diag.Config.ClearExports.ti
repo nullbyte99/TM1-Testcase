@@ -1,0 +1,37 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+platform = CellGetS ( 'diag.control.cube', 'platform', 'value' );
+vSlash = CELLGETS ( 'diag.control.cube', 'slash', 'value' );
+exportDir = CellGETS ( 'diag.control.cube', 'export directory', 'value' );
+
+CELLPUTS ( '', 'diag.control.cube', 'last export', 'value' );
+
+IF ( platform @= 'WIN');
+   ExecuteCommand ( 'cmd /c rmdir /S /Q ' | exportDir,1 ); 
+   ExecuteCommand ( 'cmd /c mkdir ' | exportDir,1 ); 
+
+ELSEIF ( platform @= 'IX' );
+   ExecuteCommand ( 'rm -rf ' | exportDir | vSlash | '*'  ,1); 
+ELSE;
+  ProcessQuit ();
+ENDIF;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

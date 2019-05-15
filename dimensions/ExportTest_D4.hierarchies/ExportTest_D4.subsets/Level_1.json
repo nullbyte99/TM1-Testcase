@@ -1,0 +1,28 @@
+{
+	"@type":"Subset",
+	"Name":"Level_1",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E1')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E2')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E3')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E4')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E5')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E6')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')/Hierarchies('ExportTest_D4')/Elements('L1_E7')"
+		}
+	]
+}

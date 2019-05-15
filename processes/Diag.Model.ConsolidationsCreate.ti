@@ -1,0 +1,84 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+IF ( pLevel = 0 );
+   ExecuteProcess ( 'Diag.Model.ConsolidationsRemove', 'pDimensionName', pDimensionName );
+ENDIF;
+
+levelSubset = 'Level_' | NumberToString ( pLevel );
+IF ( SubsetExists ( pDimensionName, levelSubset ) = 1);
+   SubsetDestroy ( pDimensionName, levelSubset );
+ENDIF;
+SubsetCreate ( pDimensionName, levelSubset );
+
+leafElementCount = DIMSIZ ( pDimensionName );
+i = 1;
+WHILE ( i <= leafElementCount );
+   elementName = DIMNM ( pDimensionName, i );
+   #ASCIIOUTPUT ( '../consolidate_L' | NumberToString ( pLevel ) | '.log', elementName | ' - ' | NumberToString ( ElementLevel ( pDimensionName, pDimensionName, elementName ) ) );
+   IF ( ElementLevel ( pDimensionName, pDimensionName, elementName ) = pLevel );
+      SubsetElementInsert ( pDimensionName, levelSubset, elementName, SubsetGetSize ( pDimensionName, levelSubset ) + 1 );
+   ENDIF;
+   i = i + 1;
+END;
+
+i = 1;
+parentElementName = '';
+
+DataSourceType='SUBSET';
+DatasourceNameForServer=pDimensionName;
+DatasourceDimensionSubset=levelSubset;
+
+
+
+
+
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+IF ( i = 1 );
+   parentElementName  = 'L' | NumberToString ( pLevel + 1 ) | '_E1';
+   DimensionElementInsertDirect ( pDimensionName, '', parentElementName, 'C' );
+   DimensionElementComponentAddDirect ( pDimensionName, parentElementName, vElement, 1 );
+ELSEIF ( MOD ( i, pLevelSize ) = 0 );
+   parentElementName  = 'L' | NumberToString ( pLevel + 1 ) | '_E' | NumberToString ( ( i / pLevelSize ) + 1 );
+   DimensionElementInsertDirect ( pDimensionName, '', parentElementName, 'C' );
+   DimensionElementComponentAddDirect ( pDimensionName, parentElementName, vElement, 1 );
+ELSE ;
+   DimensionElementComponentAddDirect ( pDimensionName, parentElementName, vElement, 1 );
+ENDIF;
+
+i = i + 1;
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+IF ( pLevel < pMaxLevel );
+    ExecuteProcess ( 'Diag.Model.ConsolidationsCreate', 'pDimensionName', pDimensionName, 'pLevel', pLevel + 1, 'pLevelSize', pLevelSize, 'pMaxLevel', pMaxLevel );
+ENDIF;
+
+#endregion

@@ -1,0 +1,47 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+IF ( CubeExists ( 'diag.dummy.cube' ) = 1);
+   CubeDestroy ( 'diag.dummy.cube' );
+ENDIF;
+
+i = 1;
+WHILE ( i <= 17 );
+   dimensionName = 'diag.dummy.dim' | NumberToString(i);
+   IF ( DimensionExists ( dimensionName ) = 1 );
+      DimensionDestroy( dimensionName );
+   ENDIF;
+   DimensionCreate( dimensionName );
+   DimensionElementInsert ( dimensionName, '', 'diag.dummy.element', 'N');
+   i = i + 1;
+END;
+
+CubeCreate ( 'diag.dummy.cube', 'diag.dummy.dim1', 'diag.dummy.dim2', 'diag.dummy.dim3', 'diag.dummy.dim4', 'diag.dummy.dim5', 'diag.dummy.dim6', 'diag.dummy.dim7', 'diag.dummy.dim8', 'diag.dummy.dim9', 'diag.dummy.dim10', 'diag.dummy.dim11', 'diag.dummy.dim12', 'diag.dummy.dim13', 'diag.dummy.dim14', 'diag.dummy.dim15', 'diag.dummy.dim16', 'diag.dummy.dim17');
+
+
+ViewCreate ( 'diag.dummy.cube', 'Default' );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

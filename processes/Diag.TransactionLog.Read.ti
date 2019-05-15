@@ -1,0 +1,192 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+DataSourceType = 'CHARACTERDELIMITED';
+DatasourceNameForServer = pTransactionLog;
+DatasourceNameForClient = pTransactionLog;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( SubSt(vCube, 0, 1 ) @= '}' );
+	ITEMSKIP;
+ENDIF;
+
+IF ( vDim3 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim4 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3);
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim5 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4);
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim6 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim7 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim8 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim9 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim10 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim11 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim12 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim13 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim14 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim15 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim16 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15 );
+		ENDIF;
+	ENDIF;
+ELSEIF ( vDim17 @= '' );
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16 );
+		ENDIF;
+	ENDIF;
+ELSE;
+	IF ( vDatatype @= 'N' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16, vDim17 ) = 1);
+			CellPutN (StringToNumber( vNewvalue ), vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16, vDim17 );
+		ENDIF;
+	ELSEIF ( vDatatype @= 'S' );
+		IF ( CellIsUpdateable ( vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16, vDim17 ) = 1 );
+			CellPutS ( vNewvalue, vCube, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15, vDim16, vDim17 );
+		ENDIF;
+	ENDIF;
+ENDIF;
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

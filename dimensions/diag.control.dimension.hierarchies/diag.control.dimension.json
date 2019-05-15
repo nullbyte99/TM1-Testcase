@@ -1,0 +1,104 @@
+{
+	"@type":"Hierarchy",
+	"Name":"diag.control.dimension",
+	"Elements":
+	[
+		{
+			"Name":"current date",
+			"Type":"String"
+		},
+		{
+			"Name":"current time",
+			"Type":"String"
+		},
+		{
+			"Name":"current year",
+			"Type":"String"
+		},
+		{
+			"Name":"current month",
+			"Type":"String"
+		},
+		{
+			"Name":"current day",
+			"Type":"String"
+		},
+		{
+			"Name":"current datetime",
+			"Type":"String"
+		},
+		{
+			"Name":"platform",
+			"Type":"String"
+		},
+		{
+			"Name":"slash",
+			"Type":"String"
+		},
+		{
+			"Name":"install directory",
+			"Type":"String"
+		},
+		{
+			"Name":"model directory",
+			"Type":"String"
+		},
+		{
+			"Name":"data directory",
+			"Type":"String"
+		},
+		{
+			"Name":"logs directory",
+			"Type":"String"
+		},
+		{
+			"Name":"scripts directory",
+			"Type":"String"
+		},
+		{
+			"Name":"queue directory",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"scramble directory",
+			"Type":"String"
+		},
+		{
+			"Name":"backup directory",
+			"Type":"String"
+		},
+		{
+			"Name":"import directory",
+			"Type":"String"
+		},
+		{
+			"Name":"export directory",
+			"Type":"String"
+		},
+		{
+			"Name":"user",
+			"Type":"String"
+		},
+		{
+			"Name":"password",
+			"Type":"String"
+		},
+		{
+			"Name":"namespace",
+			"Type":"String"
+		},
+		{
+			"Name":"model name",
+			"Type":"String"
+		},
+		{
+			"Name":"adminhost",
+			"Type":"String"
+		},
+		{
+			"Name":"last export",
+			"Type":"Numeric"
+		}
+	],
+	"Subsets@Code.links":[]
+}

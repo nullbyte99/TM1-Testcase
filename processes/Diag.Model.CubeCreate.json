@@ -1,0 +1,43 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.CubeCreate",
+	"Code@Code.link":"Diag.Model.CubeCreate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubeName",
+			"Prompt":"Name of cube to create",
+			"Value":"ExportTest",
+			"Type":"String"
+		},
+		{
+			"Name":"pDimensionCount",
+			"Prompt":"Number of dimensions in cube",
+			"Value":5,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDimensionSizes",
+			"Prompt":"Number of elements in each dimension",
+			"Value":"10, 15, 15, 30, 50",
+			"Type":"String"
+		},
+		{
+			"Name":"pElementNameSize",
+			"Prompt":"",
+			"Value":8,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pRecreateCube",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

@@ -1,0 +1,31 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+ExecuteProcess ( 'Diag.Ti.Stats.Start', 'pProcessName', GetProcessName(), 'p1', pError );
+
+
+IF ( pError @= 'Y' );
+   ExecuteProcess ( 'Diag.Ti.Stats.End', 'pProcessName', GetProcessName(), 'pStatus', 'Error', 'pDetail', 'Fail test' );
+   PROCESSQUIT();
+ENDIF;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+ExecuteProcess ( 'Diag.Ti.Stats.Endt', 'pProcessName', GetProcessName(), 'pStatus', 'Completed', 'pDetail', 'All good' );
+#endregion

@@ -1,0 +1,31 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+vnow = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' ) ;
+slash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
+exportDir = CELLGETS ( 'diag.control.cube', 'export directory', 'value' );
+
+outputDirectory = exportDir | 'BAK_' | vnow | slash;
+
+ExecuteCommand ( 'cmd /c mkdir ' | outputDirectory , 1 );
+
+ExecuteProcess ( 'Diag.Lifecycle.ExportAllCubes', 'pOutputDirectory', outputDirectory, 'pIncludeSecurity', pIncludeSecurity );
+ExecuteProcess ( 'Diag.Lifecycle.ExportAllDimensions', 'pOutputDirectory', outputDirectory, 'pIncludeSecurity', pIncludeSecurity );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

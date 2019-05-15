@@ -1,0 +1,30 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+nextLine = NumberToString ( ATTRNL ( '}Processes', pProcessName, 'Run Count' ) );
+
+CELLPUTS ( pStatus, 'diag.ti.stats', pProcessName, nextLine, 'Status' );
+CELLPUTS ( pDetail, 'diag.ti.stats', pProcessName, nextLine, 'Detail' );
+CELLPUTN ( NOW(), 'diag.ti.stats', pProcessName, nextLine, 'End Time' );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+
+#endregion

@@ -1,0 +1,16 @@
+{
+	"@type":"Hierarchy",
+	"Name":"diag.control.value",
+	"Elements":
+	[
+		{
+			"Name":"value",
+			"Type":"String"
+		},
+		{
+			"Name":"comment",
+			"Type":"String"
+		}
+	],
+	"Subsets@Code.links":[]
+}

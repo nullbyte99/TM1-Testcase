@@ -1,0 +1,106 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+IF ( rebuild @= 'Y' );
+   IF ( CubeExists ( 'diag.control.cube' ) = 1);
+       CubeDestroy ( 'diag.control.cube' );
+       DimensionDestroy ( 'diag.control.dimension' );
+       DimensionDestroy ( 'diag.control.value' );
+   ENDIF;
+ENDIF;
+
+IF ( DimensionExists ( 'diag.control.dimension' ) = 0);
+   DimensionCreate ( 'diag.control.dimension' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current date', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current time', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current year', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current month', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current day', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'current datetime', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'platform', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'slash', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'install directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'model directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'data directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'logs directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'scripts directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'scramble directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'backup directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'import directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'export directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'queue directory', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'user', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'password', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'namespace', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'model name', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.dimension', '', 'adminhost', 'S' );
+
+ENDIF;
+
+IF ( DimensionExists ( 'diag.control.value' ) = 0);
+   DimensionCreate ( 'diag.control.value' );
+   DimensionElementInsertDirect ( 'diag.control.value', '', 'value', 'S' );
+   DimensionElementInsertDirect ( 'diag.control.value', '', 'comment', 'S' );
+ENDIF;
+
+IF ( CubeExists ( 'diag.control.cube' ) = 0);
+   CubeCreate ( 'diag.control.cube', 'diag.control.dimension', 'diag.control.value' );
+   CubeRuleAppend ( 'diag.control.cube', '[''current date'', ''value''] = S:DATE (NOW);', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''current time'', ''value''] = S:TIME;', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''current year'', ''value''] = S:TRIM( STR (YEAR ( DATE (NOW) ), 2, 0) );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''current month'', ''value''] = S:TRIM ( STR (MONTH ( DATE (NOW) ), 2, 0) );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''current day'', ''value''] = S:TRIM ( STR ( DAY ( DATE ( NOW ) ), 2, 0) );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''current datetime'', ''value''] = S:TIMST ( NOW, ''\Y\m\d\h\i\s'' );', 0.0 );
+
+   CubeRuleAppend ( 'diag.control.cube', '[''slash'', ''value''] = S:IF ( DB ( ''diag.control.cube'', ''platform'', ''value'' ) @= ''WIN'', ''\'', IF ( DB ( ''diag.control.cube'', ''platform'', ''value'' ) @= ''IX'', ''/'', STET ) );', 0.0 );
+
+   CubeRuleAppend ( 'diag.control.cube', '[''scripts directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''scripts'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''scramble directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''scramble'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''backup directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''backup'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''import directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''import'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''export directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''export'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''queue directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''queuet'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''data directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''data'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CubeRuleAppend ( 'diag.control.cube', '[''logs directory'', ''value''] = S:DB(''diag.control.cube'', ''model directory'', ''value'' ) | ''logs'' | DB(''diag.control.cube'', ''slash'', ''value'' );', 0.0 );
+   CELLPUTS ( 'WIN/IX', 'diag.control.cube', 'platform', 'comment' );
+
+   ViewCreate ( 'diag.control.cube', 'default' );
+ENDIF;
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

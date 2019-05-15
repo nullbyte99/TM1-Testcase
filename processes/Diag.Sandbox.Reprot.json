@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Sandbox.Reprot",
+	"Code@Code.link":"Diag.Sandbox.Reprot.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pReportDirectory",
+			"Prompt":"",
+			"Value":"/app/ibm/cognos/tm1models/dev/report/",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

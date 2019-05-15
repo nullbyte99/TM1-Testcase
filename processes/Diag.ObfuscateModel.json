@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.ObfuscateModel",
+	"Code@Code.link":"Diag.ObfuscateModel.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

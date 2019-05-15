@@ -1,0 +1,31 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Lifecycle.ExportAllDimensions",
+	"Code@Code.link":"Diag.Lifecycle.ExportAllDimensions.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pOutputDirectory",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pIncludeSecurity",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		},
+		{
+			"Name":"pIncludeAttributes",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

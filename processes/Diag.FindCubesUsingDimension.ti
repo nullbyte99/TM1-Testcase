@@ -1,0 +1,49 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+DatasourceASCIIQuoteCharacter='';
+
+vNow = NumberToString( NOW );
+reportFileName = pReportDirectory | 'find_cubes_using_dimension_' | pDimensionName | '_' | vNow | '.log';
+
+ASCIIOUTPUT ( reportFileName, '-- CUBES USING DIMENSION --');
+ASCIIOUTPUT ( reportFileName, '' );
+ASCIIOUTPUT ( reportFileName, '-- REPORTING ON DIMENSION: ' | pDimensionName | ' --' );
+ASCIIOUTPUT ( reportFileName, '' );
+
+i = 1;
+cubeName = DIMNM ( '}Cubes', i );
+WHILE ( cubeName @<> '' );
+     found = 0;
+     j = 1;
+    dimName = TABDIM ( cubeName,  j );
+    WHILE ( dimName @<> '' );
+         IF ( dimName @= pDimensionName );
+               found = 1;
+               ASCIIOUTPUT ( reportFileName, cubeName );
+               BREAK;
+         ENDIF;
+         j = j + 1;
+         dimName = TABDIM ( cubeName,  j );
+    END;
+     i = i + 1;
+     cubeName = DIMNM ( '}Cubes', i );
+END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

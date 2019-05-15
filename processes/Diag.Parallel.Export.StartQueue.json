@@ -1,0 +1,61 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Parallel.Export.StartQueue",
+	"Code@Code.link":"Diag.Parallel.Export.StartQueue.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubeName",
+			"Prompt":"Name of cube to populate",
+			"Value":"ExportTest",
+			"Type":"String"
+		},
+		{
+			"Name":"pDensity",
+			"Prompt":"Percent density of input data",
+			"Value":100,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSplitDimension",
+			"Prompt":"Dimension to split data load on",
+			"Value":"ExportTest_D5",
+			"Type":"String"
+		},
+		{
+			"Name":"pQueueSize",
+			"Prompt":"",
+			"Value":10,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUseRunProcess",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		},
+		{
+			"Name":"pRandomize",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		},
+		{
+			"Name":"pClearPostExport",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		},
+		{
+			"Name":"pImport",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

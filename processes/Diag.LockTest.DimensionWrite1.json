@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.LockTest.DimensionWrite1",
+	"Code@Code.link":"Diag.LockTest.DimensionWrite1.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDimensionName",
+			"Prompt":"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

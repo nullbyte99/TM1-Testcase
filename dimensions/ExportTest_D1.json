@@ -1,0 +1,13 @@
+{
+	"@type":"Dimension",
+	"Name":"ExportTest_D1",
+	"AllLeavesHierarchyName":"",
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')"
+	},
+	"Hierarchies@Code.links":
+	[
+		"ExportTest_D1.hierarchies/ExportTest_D1.json"
+	]
+}

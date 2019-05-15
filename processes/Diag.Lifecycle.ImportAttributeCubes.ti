@@ -1,0 +1,64 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+DataSourceType = 'CHARACTERDELIMITED';
+DatasourceNameForServer = pImportDirectory | 'cubes.txt';
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+vCubeFile = pImportDirectory | vCubeName | '.cube';
+
+IF ( SCAN ( '}ElementAttributes_', vCubeName ) <> 1 );
+  ITEMSKIP;
+ENDIF;
+
+IF ( CUBEEXISTS ( vCubeName ) = 0 );
+   IF ( vDim3 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2 );
+   ELSEIF ( vDim4 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3 );
+   ELSEIF ( vDim5 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4 );
+   ELSEIF ( vDim6 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5 );
+   ELSEIF ( vDim7 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6 );
+   ELSEIF ( vDim8 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7 );
+   ELSEIF ( vDim9 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8 );
+   ELSEIF ( vDim10 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9 );
+   ELSEIF ( vDim11 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10 );
+   ELSEIF ( vDim12 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11 );
+   ELSEIF ( vDim13 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12 );
+   ELSEIF ( vDim14 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13 );
+    ELSEIF ( vDim15 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14 );
+   ELSEIF ( vDim16 @= '' );
+      CUBECREATE ( vCubeName, vDim1, vDim2, vDim3, vDim4, vDim5, vDim6, vDim7, vDim8, vDim9, vDim10, vDim11, vDim12, vDim13, vDim14, vDim15 );
+   ENDIF;
+
+   ExecuteProcess ( 'Diag.Lifecycle.ImportCube', 'pFileName', vCubeFile, 'pCubeName', vCubeName );
+ENDIF;
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

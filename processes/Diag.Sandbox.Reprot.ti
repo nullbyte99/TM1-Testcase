@@ -1,0 +1,47 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+DatasourceASCIIQuoteCharacter='';
+
+vNow = NumberToString( NOW );
+reportFileName = pReportDirectory | 'sandbox_report_' | vNow | '.log';
+
+ASCIIOUTPUT ( reportFileName, '-- SANDBOX REPORT --' );
+ASCIIOUTPUT ( reportFileName, '' );
+
+clientCount = DIMSIZ ( '}Clients' );
+i = 1;
+WHILE ( i < clientCount );
+    currentClient = DIMNM ( '}Clients', i );
+    clientSandboxCount = ServerSandboxListCountGet( currentClient );
+    IF (clientSandboxCount > 0 );
+       ASCIIOUTPUT ( reportFileName, currentClient | ' has ' | NumberToString ( clientSandboxCount ) | ' sandboxes' );
+       j = 1;
+       currentSandBoxName =  ServerSandboxGet ( j, currentClient );
+       WHILE ( currentSandBoxName @<> '' );
+           ASCIIOUTPUT ( reportFileName, currentSandBoxName );
+           j = j + 1;
+          currentSandBoxName = ServerSandboxGet ( j, currentClient );
+       END;
+    ENDIF;
+    i = i + 1;
+   ASCIIOUTPUT ( reportFileName, '' );
+END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

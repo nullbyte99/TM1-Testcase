@@ -1,0 +1,31 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.CreateStaticDuplicate",
+	"Code@Code.link":"Diag.Model.CreateStaticDuplicate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pSourceCubeName",
+			"Prompt":"",
+			"Value":"ExportTest",
+			"Type":"String"
+		},
+		{
+			"Name":"pTargetCubeName",
+			"Prompt":"",
+			"Value":"CopyOfExportTest",
+			"Type":"String"
+		},
+		{
+			"Name":"pRecreateTargetCube",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

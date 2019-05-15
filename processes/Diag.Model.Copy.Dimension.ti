@@ -1,0 +1,25 @@
+#region Prolog
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( DIMENSIONEXISTS ( pTargetDimension ) = 1 );
+	DIMENSIONDESTROY ( pTargetDimension );
+ENDIF;
+DIMENSIONCREATE ( pTargetDimension );
+
+
+count = 1;
+currentElement = DIMNM ( pSourceDimension, count );
+WHILE ( currentElement @<> '' );
+	IF ( ELLEV ( pSourceDimension, currentElement ) = 0  );
+		DIMENSIONELEMENTINSERT ( pTargetDimension, '', currentElement, DTYPE ( pSourceDimension, currentElement ) );
+	ENDIF;
+	count = count + 1;
+	currentElement = DIMNM ( pSourceDimension, count );
+END;
+
+#endregion
+#region Epilog
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

@@ -1,0 +1,49 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+DatasourceASCIIQuoteCharacter='';
+
+vnow = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' ) ;
+slash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
+exportDir = CELLGETS ( 'diag.control.cube', 'export directory', 'value' );
+
+vCount = 1; 
+vDimName = DIMNM ( '}Dimensions', vCount );
+WHILE ( vDimName @<> '' );
+   IF ( SUBST ( vDimName, 1, 1 ) @<> '}' & SCAN ( ':', vDimName) = 0 );
+       ASCIIOUTPUT ( pOutputDirectory | 'dimensions.txt', vDimName );
+       ExecuteProcess ( 'Diag.Lifecycle.ExportDimension', 'pDimensionName', vDimName, 'pOutputDirectory', pOutputDirectory, 'pIncludeAttributes', pIncludeAttributes, 'pIncludeSecurity', pIncludeSecurity );
+   ELSEIF ( pIncludeSecurity @= 'Y' & ( vDimName @= '}Clients' % vDimName @= '}Groups' ) );      
+       ASCIIOUTPUT ( pOutputDirectory | 'dimensions.txt', vDimName );
+       ExecuteProcess ( 'Diag.Lifecycle.ExportDimension', 'pDimensionName', vDimName, 'pOutputDirectory', pOutputDirectory, 'pIncludeAttributes', pIncludeAttributes, 'pIncludeSecurity', pIncludeSecurity );      
+   ENDIF;
+   vCount = vCount + 1;
+   vDimName = DIMNM ( '}Dimensions', vCount );
+END;
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

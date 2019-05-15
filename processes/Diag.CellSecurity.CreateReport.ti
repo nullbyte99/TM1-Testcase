@@ -1,0 +1,440 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+DatasourceASCIIQuoteCharacter='';
+
+## Generate the name of the report file
+
+IF ( CubeExists ( pCubeName ) = 0 );
+    ProcessQuit;
+ENDIF;
+
+reportFileName = 'report.txt';
+vnow  = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' );
+outputDirectory = CELLGETS ( 'diag.control.cube', 'export directory', 'value' ) | vnow | '/';
+ExecuteCommand ( 'mkdir ' | outputDirectory , 1 );
+
+## Check that the user account name is in the }Clients dimension
+## This seems to require the actual element name an not an alias
+
+clientIndex = DIMIX ( '}Clients', pClient );
+IF ( clientIndex = 0 );
+   PROCESSERROR;
+ENDIF;
+
+## Placeholders for the element names provided by the pCell parameter
+
+elemListTempDimName = 'diag.cell.security.elem.list';
+IF ( DimensionExists ( elemListTempDimName ) = 1 );
+   DimensionDestroy (elemListTempDimName ); 
+ENDIF;
+DimensionCreate ( elemListTempDimName ) ;
+
+## Create the temp dimensions used for cell security and global overlay
+
+cellSecurityDimensionTempDimName = 'diag.cell.security.temp.dimension.list';
+IF ( DimensionExists ( cellSecurityDimensionTempDimName ) = 1 );
+   DimensionDestroy ( cellSecurityDimensionTempDimName ); 
+ENDIF;
+DimensionCreate ( cellSecurityDimensionTempDimName ) ;
+AttrInsert( cellSecurityDimensionTempDimName, '',  'elemName', 'S');
+
+globalOverlayDimensionTempDimName = 'diag.cell.security.temp.global.overlay';
+IF ( DimensionExists ( globalOverlayDimensionTempDimName ) = 1 );
+   DimensionDestroy ( globalOverlayDimensionTempDimName ); 
+ENDIF;
+DimensionCreate ( globalOverlayDimensionTempDimName ) ;
+AttrInsert( globalOverlayDimensionTempDimName, '',  'elemName', 'S');
+
+
+## Parse the element names
+## *** This should probably be stored as a temporary subset instead of a static number of variables
+
+tempCell = pCell;
+cellPos = 1;
+l = 1;
+WHILE ( cellPos > 0 );
+   cellPos = SCAN ( ',', tempCell );
+   IF ( cellPos > 0 );
+      currentElem = TRIM ( SUBST ( tempCell, 1, cellPos - 1 ) );
+      tempCell = SUBST ( tempCell, cellPos + 2,  LONG ( tempCell ) - cellPos );
+   ELSE;
+       currentElem = TRIM ( SUBST ( tempCell, 1, LONG ( tempCell ) ) );
+   ENDIF;
+   DimensionElementInsertDirect( elemListTempDimName, '', currentElem, 'N' );
+   DimensionElementInsertDirect ( cellSecurityDimensionTempDimName, '', TABDIM( pCubeName, l ) , 'S' );
+   AttrPutS( currentElem, cellSecurityDimensionTempDimName, TABDIM( pCubeName, l ), 'elemName' );
+   l = l + 1;
+END;
+
+
+tempCell = pCell;
+cellPos = 1;
+l = 1;
+WHILE ( cellPos > 0 );
+   cellPos = SCAN ( ',', tempCell );
+   IF ( cellPos > 0 );
+      currentElem = TRIM ( SUBST ( tempCell, 1, cellPos - 1 ) );
+      tempCell = SUBST ( tempCell, cellPos + 2,  LONG ( tempCell ) - cellPos );
+   ELSE;
+       currentElem = TRIM ( SUBST ( tempCell, 1, LONG ( tempCell ) ) );
+   ENDIF;
+   DimensionElementInsertDirect ( globalOverlayDimensionTempDimName, '', TABDIM( pCubeName, l ) , 'S' );
+   AttrPutS( currentElem, globalOverlayDimensionTempDimName, TABDIM( pCubeName, l ), 'elemName' );
+   l = l + 1;
+END;
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- REPORTING ON USER: ' | pClient | ' --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- REPORTING ON CELL: ' | pCubeName | ' [' | pCell | '] --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '');
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- GROUP MEMBERSHIPS --');
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+i = 1;
+groupsCount = DIMSIZ ( '}Groups' );
+groups = '';
+
+cellSecurityCheckTempSubset = 'diag.cell.security.check.subset';
+IF ( SubsetExists ( '}Groups', cellSecurityCheckTempSubset  ) = 1 );
+   SubsetDestroy ( '}Groups', cellSecurityCheckTempSubset  ) ;
+ENDIF;
+SubsetCreate  ( '}Groups', cellSecurityCheckTempSubset  ) ;
+
+WHILE ( i <= groupsCount );
+   currentGroup = DIMNM ( '}Groups', i );
+   currentCell = CELLGETS ( '}ClientGroups', pClient, currentGroup );
+   IF ( currentCell @<> '' );
+       ASCIIOUTPUT ( outputDirectory | reportFileName, 'Found group membership ' | currentCell );
+       SubsetElementInsert( '}Groups', cellSecurityCheckTempSubset, currentCell, SubsetGetSize( '}Groups', cellSecurityCheckTempSubset ) );
+       IF ( groups @= '');
+          groups = groups | currentCell;
+       ELSE;
+          groups = groups | ', ' | currentCell;
+       ENDIF;
+   ENDIF;
+   i = i + 1;
+END;
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- CELL SECURITY --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+cellSecurityTempElemList = 'diag.cell.security.temp.elem.list';
+IF ( DimensionExists ( cellSecurityTempElemList ) = 1 );
+   DimensionDestroy ( cellSecurityTempElemList ); 
+ENDIF;
+DimensionCreate ( cellSecurityTempElemList ) ;
+
+cellSecurityCubeName = '}CellSecurity_' | pCubeName;
+IF ( CubeExists ( cellSecurityCubeName ) = 1);
+   ASCIIOUTPUT ( outputDirectory | reportFileName, cellSecurityCubeName | ' cube exists' );
+   i = 1;
+    checkString = '';
+   dimensionName = TABDIM ( cellSecurityCubeName, i );
+   cellSecurityDimensions = dimensionName;
+   WHILE ( dimensionName @<> '' );
+      IF ( dimensionName @<> '}Groups' );
+           DimensionElementInsertDirect( cellSecurityTempElemList, '', ATTRSL ( cellSecurityDimensionTempDimName, dimensionName, 'elemName' ), 'N');
+      ENDIF;
+      i = i + 1;
+      dimensionName = TABDIM ( cellSecurityCubeName, i );
+      IF ( i > 17 );
+         PROCESSQUIT;
+      ENDIF;
+   END;  
+   i = i - 1;
+
+      k = 1;
+      WHILE ( k <= SubsetGetSize( '}Groups', cellSecurityCheckTempSubset ) );
+         currentGroup = SubsetGetElementName( '}Groups', cellSecurityCheckTempSubset, k );
+         IF ( i =  2 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), currentGroup );
+         ELSEIF ( i =  3 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), currentGroup );
+         ELSEIF ( i =  4 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), currentGroup );
+         ELSEIF ( i =  5 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), currentGroup );
+         ELSEIF ( i =  6 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ),currentGroup );
+         ELSEIF ( i =  7 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ),currentGroup );
+         ELSEIF ( i =  8 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ),  DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), currentGroup );
+         ELSEIF ( i =  9 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), currentGroup );
+         ELSEIF ( i =  10 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), currentGroup );
+         ELSEIF ( i =  11 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), currentGroup );
+         ELSEIF ( i =  12 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), currentGroup );
+         ELSEIF ( i =  13 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), DIMNM ( cellSecurityTempElemList, 12 ), currentGroup );
+         ELSEIF ( i =  14 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), DIMNM ( cellSecurityTempElemList, 12 ), DIMNM ( cellSecurityTempElemList, 13 ),  currentGroup );
+         ELSEIF ( i =  15 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), DIMNM ( cellSecurityTempElemList, 12 ), DIMNM ( cellSecurityTempElemList, 13 ), DIMNM ( cellSecurityTempElemList, 14 ), currentGroup );
+         ELSEIF ( i =  16 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), DIMNM ( cellSecurityTempElemList, 12 ), DIMNM ( cellSecurityTempElemList, 13 ), DIMNM ( cellSecurityTempElemList, 14 ), DIMNM ( cellSecurityTempElemList, 15 ), currentGroup );
+         ELSEIF ( i =  17 );
+            currentCell = CELLGETS( cellSecurityCubeName, DIMNM ( cellSecurityTempElemList, 1 ), DIMNM ( cellSecurityTempElemList, 2 ), DIMNM ( cellSecurityTempElemList, 3 ), DIMNM ( cellSecurityTempElemList, 4 ), DIMNM ( cellSecurityTempElemList, 5 ), DIMNM ( cellSecurityTempElemList, 6 ), DIMNM ( cellSecurityTempElemList, 7 ), DIMNM ( cellSecurityTempElemList, 8 ), DIMNM ( cellSecurityTempElemList, 9 ), DIMNM ( cellSecurityTempElemList, 10 ), DIMNM ( cellSecurityTempElemList, 11 ), DIMNM ( cellSecurityTempElemList, 12 ), DIMNM ( cellSecurityTempElemList, 13 ), DIMNM ( cellSecurityTempElemList, 14 ), DIMNM ( cellSecurityTempElemList, 15 ), DIMNM ( cellSecurityTempElemList, 16 ), currentGroup );
+         ENDIF;
+         IF (currentCell @= '' );
+             currentCell = 'NONE';
+         ENDIF;
+         ASCIIOUTPUT ( outputDirectory | reportFileName, 'Group ' | currentGroup | ' has ' | currentCell | ' access on cell' );
+      k = k + 1;
+      END;
+   i = i + 1;
+ELSE;
+   ASCIIOUTPUT ( outputDirectory | reportFileName, 'No }CellSecurity_' | pCubeName | ' cube' );
+ENDIF;
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- ELEMENT SECURITY --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+i = 1;
+dimensionName = TABDIM ( pCubeName, i );
+WHILE ( dimensionName @<> '' );
+   element = DIMNM ( elemListTempDimName, i );
+   ASCIIOUTPUT ( outputDirectory | reportFileName,  'Dimension: ' | dimensionName | '  -  Element: ' | element );
+   IF ( i > 17 );
+      PROCESSQUIT;
+   ENDIF;
+   elementSecurityCubeName = '}ElementSecurity_' | dimensionName;
+   IF ( CubeExists ( elementSecurityCubeName ) = 1) ;
+       ASCIIOUTPUT ( outputDirectory | reportFileName, elementSecurityCubeName | ' cube exists' );
+       k = 1;
+       WHILE ( k <= SubsetGetSize( '}Groups', cellSecurityCheckTempSubset ) );
+          currentGroup = SubsetGetElementName( '}Groups', cellSecurityCheckTempSubset, k );     
+          currentCell = CELLGETS( elementSecurityCubeName, element, currentGroup );
+          IF ( currentCell @<> '' );
+             ASCIIOUTPUT ( outputDirectory | reportFileName, 'Group ' | currentGroup | ' has ' | currentCell | ' access to element' );
+          ELSE;        
+             ASCIIOUTPUT ( outputDirectory | reportFileName, 'Group ' | currentGroup | ' has NONE access to element' );
+          ENDIF;
+       k = k + 1;
+       END;
+   ELSE;
+       ASCIIOUTPUT ( outputDirectory | reportFileName, 'No }ElementSecurity_' | dimensionName | ' cube');
+   ENDIF;
+   ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+   i = i + 1;
+   dimensionName = TABDIM ( pCubeName, i );
+END;
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- DIMENSION SECURITY --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+i = 1;
+groupsCount = DIMSIZ ( '}Groups' );
+WHILE ( i <= groupsCount );
+   currentGroup = DIMNM ( '}Groups', i );
+   currentCell = CELLGETS ( '}ClientGroups', pClient, currentGroup );
+   IF ( currentCell @= currentGroup );
+       j = 1;
+       dimensionName = TABDIM ( pCubeName, j );
+       WHILE ( dimensionName @<> '' );
+           dimSecurity = CELLGETS ( '}DimensionSecurity', dimensionName, currentGroup );
+           IF (dimSecurity @= '' );
+               dimSecurity = 'NONE';
+           ENDIF;
+           ASCIIOUTPUT ( outputDirectory | reportFileName, 'Group ' | currentGroup | ' has ' | dimSecurity | ' on dimension ' | dimensionName );
+           j = j + 1;
+           dimensionName = TABDIM ( pCubeName, j );
+       END;
+   ENDIF;
+   i = i + 1;
+END;
+
+ASCIIOUTPUT (  outputDirectory | reportFileName, '' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- CUBE SECURITY --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+i = 1;
+groupsCount = DIMSIZ ( '}Groups' );
+WHILE ( i <= groupsCount );
+   currentGroup = DIMNM ( '}Groups', i );
+   currentCell = CELLGETS ( '}ClientGroups', pClient, currentGroup );
+   IF ( currentCell @<> '' );
+       gSecurity = CELLGETS ( '}CubeSecurity', pCubeName, currentGroup );
+       IF (gSecurity @= '' );
+           gSecurity = 'NONE';
+       ENDIF;
+       ASCIIOUTPUT ( outputDirectory | reportFileName, 'Group ' | currentCell | ' has ' | gSecurity | ' on cube ' | pCubeName );
+   ENDIF;
+   i = i + 1;
+END;
+
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- GLOBAL SECURITY OVERLAY --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+globalOverlayTempElemList = 'diag.cell.security.temp.global.overlay.element.list';
+IF ( DimensionExists ( globalOverlayTempElemList ) = 1 );
+   DimensionDestroy ( globalOverlayTempElemList ); 
+ENDIF;
+DimensionCreate ( globalOverlayTempElemList ) ;
+
+goSecurityCubeName = '}SecurityOverlayGlobal_' | pCubeName;
+IF ( CubeExists ( goSecurityCubeName ) = 1);
+   ASCIIOUTPUT ( outputDirectory | reportFileName, goSecurityCubeName | ' cube exists' );
+   i = 1;
+   dimensionName = TABDIM ( goSecurityCubeName, i );
+   goSecurityDimensions = dimensionName;
+   WHILE ( dimensionName @<> '' );
+      IF ( dimensionName @<> '}SecurityOverlay' );
+          DimensionElementInsertDirect( globalOverlayTempElemList , '' , ATTRSL ( globalOverlayDimensionTempDimName, dimensionName, 'elemName' ), 'N' );
+      ENDIF;
+      i = i + 1;
+      dimensionName = TABDIM ( goSecurityCubeName, i );
+      IF ( i > 17 );
+         PROCESSQUIT;
+      ENDIF;
+   END;  
+   i = i - 1;
+   IF ( i = 2 );
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on intersections [' | DIMNM ( globalOverlayTempElemList, 1 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 3);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 4 );
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 5);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 6);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 7);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 8);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 9);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 10);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ), DIMNM ( globalOverlayTempElemList, 9 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ), DIMNM ( globalOverlayTempElemList, 9 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT (  outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ELSEIF ( i = 11);
+      currentCell = CELLGETS( goSecurityCubeName, DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ), DIMNM ( globalOverlayTempElemList, 9 ), DIMNM ( globalOverlayTempElemList, 10 ), 'OverlayData' );
+      IF ( currentCell @= '1' );
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay enabled on [' | DIMNM ( globalOverlayTempElemList, 1 ), DIMNM ( globalOverlayTempElemList, 2 ), DIMNM ( globalOverlayTempElemList, 3 ), DIMNM ( globalOverlayTempElemList, 4 ), DIMNM ( globalOverlayTempElemList, 5 ), DIMNM ( globalOverlayTempElemList, 6 ), DIMNM ( globalOverlayTempElemList, 7 ), DIMNM ( globalOverlayTempElemList, 8 ), DIMNM ( globalOverlayTempElemList, 9 ), DIMNM ( globalOverlayTempElemList, 10 ) | ']' );
+      ELSE;        
+          ASCIIOUTPUT ( outputDirectory | reportFileName, 'Global security overlay disabled' );
+      ENDIF;
+   ENDIF;
+ELSE;
+   ASCIIOUTPUT ( outputDirectory | reportFileName, 'No '| goSecurityCubeName | ' cube' );
+ENDIF;
+
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '-- DATA RESERVATION --' );
+ASCIIOUTPUT ( outputDirectory | reportFileName, '' );
+
+drMode = CELLGETS ( '}CubeProperties', pCubeName, 'DATARESERVATIONMODE' );
+IF ( drMode @= 'REQUIREDSHARED' % drMode @= 'REQUIRED' );
+   ASCIIOUTPUT ( outputDirectory | reportFileName, 'Data reservation required to enter data on ' | pCubeName | 'cube' );
+   vIndex = 1;
+   vAddress = CubeDataReservationGet( vIndex, pCubeName, pClient, ',' );
+   ASCIIOUTPUT ( outputDirectory | reportFileName, 'Active Data Reservations List:');
+  
+   WHILE (vAddress @<> '');
+      vSep1 = SCAN( ',', vAddress);
+      vDRUser = SUBST( vAddress, 1, vSep1 - 1);
+      vAddress = SUBST( vAddress, vSep1 + 1, LONG(vAddress) - vSep1);
+      ASCIIOUTPUT ( outputDirectory | reportFileName, vAddress );
+      vIndex = vIndex + 1;
+      vAddress = CubeDataReservationGet( vIndex, pCubeName, pClient, ',');
+   END;
+ELSE;
+   ASCIIOUTPUT ( outputDirectory | reportFileName, 'Data reservation is NOT required on ' | pCubeName | 'cube' );
+ENDIF;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+## Clean up the temp cell security dimension
+
+IF ( DimensionExists ( elemListTempDimName ) = 1 );
+   DimensionDestroy (elemListTempDimName ); 
+ENDIF;
+
+IF ( DimensionExists ( cellSecurityDimensionTempDimName ) = 1 );
+   DimensionDestroy ( cellSecurityDimensionTempDimName ); 
+ENDIF;
+
+IF ( DimensionExists ( cellSecurityTempElemList ) = 1 );
+   DimensionDestroy ( cellSecurityTempElemList ); 
+ENDIF;
+
+IF ( DimensionExists ( globalOverlayDimensionTempDimName ) = 1 );
+   DimensionDestroy ( globalOverlayDimensionTempDimName ); 
+ENDIF;
+
+IF ( SubsetExists ( '}Groups', cellSecurityCheckTempSubset  ) = 1 );
+   SubsetDestroy ( '}Groups', cellSecurityCheckTempSubset  ) ;
+ENDIF;
+
+IF ( DimensionExists ( globalOverlayTempElemList ) = 1 );
+   DimensionDestroy ( globalOverlayTempElemList ); 
+ENDIF;
+#endregion

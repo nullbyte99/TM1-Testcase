@@ -1,0 +1,75 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+DatasourceASCIIDelimiter=Char(9);
+DatasourceASCIIQuoteCharacter='';
+
+vnow = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' ) ;
+platform = CELLGETS ( 'diag.control.cube', 'platform', 'value' ) ;
+slash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
+
+dimensionExportFile = pOutputDirectory | pDimensionName | '.dim';
+SetOutputCharacterSet( dimensionExportFile, 'TM1CS_UTF8' );
+
+LOGOUTPUT ( 'INFO', 'Exporting Dimension ' | pDimensionName );
+
+DimSize = DIMSIZ ( pDimensionName );
+i = 1;
+p = 1;
+
+WHILE ( i <=DimSize );
+   vElement = DIMNM ( pDimensionName, i );
+   vElemType = DTYPE ( pDimensionName, vElement );
+   NumParent = ELPARN ( pDimensionName, vElement );
+   IF (NumParent = 0);
+      TEXTOUTPUT ( dimensionExportFile, vElement, vElement, vElemType );
+   ELSE;
+      WHILE ( p <= NumParent );
+          vParent = ELPAR ( pDimensionName, vElement, p );
+          TEXTOUTPUT ( dimensionExportFile, vElement, vParent, vElemType );
+          p = p +1;
+      END;
+   p = 1;
+   ENDIF;
+i = i +1;
+END;
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( pIncludeAttributes @= 'Y' );
+   vAttributeDimension = '}ElementAttributes_' | pDimensionName;
+   IF ( DIMENSIONEXISTS ( vAttributeDimension ) = 1 );
+      ExecuteProcess ( 'Diag.Lifecycle.ExportDimension', 'pDimensionName', vAttributeDImension, 'pOutputDirectory', pOutputDirectory ); 
+   ENDIF;
+
+   vAttributeCube = '}ElementAttributes_' | pDimensionName;
+   IF ( CUBEEXISTS ( vAttributeCube ) = 1 );
+      ExecuteProcess ( 'Diag.Lifecycle.ExportCube', 'pCubeName', vAttributeDImension, 'pOutputDirectory', pOutputDirectory );
+   ENDIF;
+ENDIF;
+
+
+IF ( pIncludeSecurity @= 'Y' );
+   vSecurityCube = '}ElementSecurity_' | pDimensionName;
+   IF ( CUBEEXISTS ( vSecurityCube ) = 1 );
+      ExecuteProcess ( 'Diag.Lifecycle.ExportCube', 'pCubeName', vSecurityCube, 'pOutputDirectory', pOutputDirectory );
+   ENDIF;
+ENDIF;
+#endregion

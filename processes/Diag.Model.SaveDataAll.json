@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.SaveDataAll",
+	"Code@Code.link":"Diag.Model.SaveDataAll.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

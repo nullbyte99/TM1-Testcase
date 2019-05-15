@@ -1,0 +1,48 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+vNow = CELLGETS ( 'diag.control.cube', 'current datetime', 'diag.control.value');
+scrambleDirectory = CELLGETS ( 'diag.control.cube', 'scramble directory', 'diag.control.value' );
+scriptDirectory = CELLGETS ( 'diag.control.cube', 'scripts directory', 'diag.control.value' );
+modelDirectory = CELLGETS ( 'diag.control.cube', 'model directory', 'diag.control.value' );
+platform = CELLGETS ( 'diag.control.cube', 'platform', 'diag.control.value' );
+
+commandLine = '';
+IF ( platform @= 'linux' );
+   commandLine = scriptDirectory  | 'script.sh ' | modelDirectory | ' ' | scrambleDirectory;
+ELSEIF ( platform @= 'windows' );
+   commandLine = scriptDirectory  | 'script.bat ' | modelDirectory | ' ' | scrambleDirectory;
+ENDIF;
+
+ExecuteCommand( commandLine, 1 );
+ASCIIOUTPUT( scrambleDirectory | 'log', commandLine  );
+
+i = 1;
+cubeCount = DIMSIZ ( '}Cubes' );
+WHILE ( i <= cubeCount );
+   cubeName = DIMNM ( '}Cubes', i );
+   IF ( SUBST ( cubeName , 1, 1) @<> '}' );
+      DebugUtility( 114, 0, 0, cubeName, scrambleDirectory, '') ;      
+   ELSE;
+
+   ENDIF;
+   i = i + 1;
+END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

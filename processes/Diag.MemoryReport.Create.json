@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.MemoryReport.Create",
+	"Code@Code.link":"Diag.MemoryReport.Create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

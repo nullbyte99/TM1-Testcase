@@ -1,0 +1,16 @@
+{
+	"@type":"Subset",
+	"Name":"Level_1",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('L1_E1')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('L1_E2')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('L1_E3')"
+		}
+	]
+}

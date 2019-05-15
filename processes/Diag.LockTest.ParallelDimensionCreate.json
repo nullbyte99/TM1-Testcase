@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.LockTest.ParallelDimensionCreate",
+	"Code@Code.link":"Diag.LockTest.ParallelDimensionCreate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

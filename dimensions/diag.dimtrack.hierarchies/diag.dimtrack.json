@@ -1,0 +1,28 @@
+{
+	"@type":"Hierarchy",
+	"Name":"diag.dimtrack",
+	"Elements":
+	[
+		{
+			"Name":"d1",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"d2",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"d3",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"d4",
+			"Type":"Numeric"
+		},
+		{
+			"Name":"d5",
+			"Type":"Numeric"
+		}
+	],
+	"Subsets@Code.links":[]
+}

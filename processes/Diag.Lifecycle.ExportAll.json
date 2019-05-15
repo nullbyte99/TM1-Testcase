@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Lifecycle.ExportAll",
+	"Code@Code.link":"Diag.Lifecycle.ExportAll.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pIncludeSecurity",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

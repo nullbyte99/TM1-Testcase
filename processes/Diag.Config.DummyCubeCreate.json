@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Config.DummyCubeCreate",
+	"Code@Code.link":"Diag.Config.DummyCubeCreate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

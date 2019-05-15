@@ -1,0 +1,13 @@
+{
+	"@type":"Dimension",
+	"Name":"diag.dimtrack",
+	"AllLeavesHierarchyName":"",
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('diag.dimtrack')/Hierarchies('diag.dimtrack')"
+	},
+	"Hierarchies@Code.links":
+	[
+		"diag.dimtrack.hierarchies/diag.dimtrack.json"
+	]
+}

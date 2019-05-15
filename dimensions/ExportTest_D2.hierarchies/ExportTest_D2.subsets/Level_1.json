@@ -1,0 +1,19 @@
+{
+	"@type":"Subset",
+	"Name":"Level_1",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('ExportTest_D2')/Hierarchies('ExportTest_D2')/Elements('L1_E1')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D2')/Hierarchies('ExportTest_D2')/Elements('L1_E2')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D2')/Hierarchies('ExportTest_D2')/Elements('L1_E3')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D2')/Hierarchies('ExportTest_D2')/Elements('L1_E4')"
+		}
+	]
+}

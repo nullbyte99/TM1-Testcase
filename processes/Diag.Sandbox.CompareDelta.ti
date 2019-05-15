@@ -1,0 +1,233 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+DatasourceASCIIQuoteCharacter='';
+vNow = NumberToString( NOW );
+
+# Created by Stuart King @ IBM
+# Last upadted August 25th 2016
+
+reportFileName = pReportDirectory | 'sandbox_' | pSandboxName  | 'delta_client_' | pClient | '_cube_' | pCubeName | '_' | vNow | '.log';
+first = 0;
+
+
+sourceViewName = 'temp_' | pCubeName | '_delta_' | vNow;
+IF ( ViewExists ( pCubeName, sourceViewName ) = 1 );
+   ViewDestroy ( pCubeName, sourceViewName );
+ENDIF;
+ViewCreate ( pCubeName, sourceViewName, 1 );
+
+i = 1;
+dimensionName = TABDIM ( pCubeName, i );
+WHILE ( dimensionName @<> '' );
+   i = i + 1;
+   dimensionName = TABDIM ( pCubeName, i );
+END;
+dimensionCount = i - 1;
+ASCIIOUTPUT ( reportFileName, 'Dimension Count: ' | NumberToString ( dimensionCount ) );
+
+i = 1;
+WHILE ( i <= dimensionCount );
+   currentDim = TABDIM ( pCubeName, i );
+   subsetName = 'temp_' | currentDim | '_export_' | vNow;
+   IF (SubsetExists ( currentDim, subsetName ) = 1 );
+      SubsetDestroy ( currentDim, subsetName ); 
+   ENDIF;
+   SubsetCreate ( currentDim, subsetName, 1 );
+   j = 1;
+   WHILE ( j <= DIMSIZ (currentDim) );
+      currentElement = DIMNM ( currentDim, j );
+      IF ( ELLEV (currentDim, currentElement ) = 0);
+         SubsetElementInsert (  currentDim, subsetName, currentElement, SubsetGetSize ( currentDim, subsetName ) + 1 );
+      ENDIF;
+      j = j + 1;
+   END; 
+   ViewSubsetAssign ( pCubeName, sourceViewName, currentDim, subsetName);
+   i = i + 1;
+END;
+
+ViewExtractSkipZeroesSet ( pCubeName, sourceViewName, 0);
+ViewExtractSkipCalcsSet ( pCubeName, sourceViewName, 1);
+ViewExtractSkipRuleValuesSet ( pCubeName, sourceViewName, 1);
+
+ViewConstruct ( pCubeName, sourceViewName );
+DataSourceType='VIEW';
+DatasourceNameForServer=pCubeName;
+DatasourceCubeview=sourceViewName;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( first = 0 );
+  ASCIIOUTPUT ( reportFileName, '-- SANDBOX DELTA REPORT -- ');
+  ASCIIOUTPUT ( reportFileName, '');
+  ASCIIOUTPUT ( reportFileName, 'User: ' | pClient );
+  ASCIIOUTPUT ( reportFileName, 'Cube: ' | pCubeName );
+  ASCIIOUTPUT ( reportFileName, '');
+  first  = 1;
+ENDIF;
+
+IF ( dimensionCount = 2 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 3 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 4 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 5 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 6 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 7 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 8 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 9 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 10);
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 11 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 12 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 13 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 14);
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 15 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 16 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16,  'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ELSEIF ( dimensionCount = 17 );
+   SetUseActiveSandboxProperty ( 0 );
+   baseValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17 );
+   ServerActiveSandboxSet ( pSandboxName );
+   SetUseActiveSandboxProperty ( 1 );
+   sandboxValue = CELLGETN ( pCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17 );
+   IF ( baseValue <> sandboxValue );
+       ASCIIOUTPUT ( reportFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17, 'base: ' | NumberToString( baseValue ), 'sandbox: ' | NumberToString( sandboxValue ) );
+   ENDIF;
+ENDIF;
+
+
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+#endregion

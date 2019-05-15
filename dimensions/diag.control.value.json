@@ -1,0 +1,13 @@
+{
+	"@type":"Dimension",
+	"Name":"diag.control.value",
+	"AllLeavesHierarchyName":"",
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('diag.control.value')/Hierarchies('diag.control.value')"
+	},
+	"Hierarchies@Code.links":
+	[
+		"diag.control.value.hierarchies/diag.control.value.json"
+	]
+}

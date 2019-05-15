@@ -1,0 +1,25 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+RunProcess ( 'Diag.LockTest.DimensionWrite1', 'pDimensionName', pDimensionName );
+RunProcess ( 'Diag.LockTest.DimensionWrite2', 'pDimensionName', pDimensionName );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

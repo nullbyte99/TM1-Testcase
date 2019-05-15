@@ -1,0 +1,41 @@
+{
+    "Version": "1.0",
+    "Tasks":
+    {
+        "ImportData":
+        {
+            "Process": "Processes('}src_sync')",
+            "Parameters": [ { "Name": "op", "Value": "1" } ]
+        },
+        "ExportData":
+        {
+            "Process": "Processes('}src_sync')",
+            "Parameters": [ { "Name": "op", "Value": "0" } ]
+        }
+    },
+    "PostPull":
+    [ 
+        "Tasks('ImportData')"
+    ],
+    "PrePush":
+    [ 
+        "Tasks('ExportData')"
+    ],
+    "Files":
+    [
+        "}Externals/*",
+        "}sync_data/*"     
+    ],
+    "Ignore":
+    [
+    	"!Dimensions('}ElementAttributes_}Processes')",
+    	"!Cubes('}ElementAttributes_}Processes')",
+		"Cubes('ExportTest')",
+		"Cubes('MyCube')",
+        "!Processes('}src_exp_attrs')",
+        "!Processes('}src_exp_cube')",
+        "!Processes('}src_imp_attrs')",
+        "!Processes('}src_imp_cube')",
+        "!Processes('}src_sync')"
+    ]
+}

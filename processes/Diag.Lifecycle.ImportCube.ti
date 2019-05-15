@@ -1,0 +1,182 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+LogOutput ( 'INFO', 'IMPORTING CUBE - ' | pCubeName );
+
+DatasourceType = 'CHARACTERDELIMITED';
+DatasourceNameForServer=pFileName;
+
+IF ( CubeExists ( pCubeName ) = 0 );
+   ProcessError;
+ENDIF;
+
+
+dimensionCount = 1;
+currentDimension = TABDIM ( pCubeName, dimensionCount );
+#ASCIIOUTPUT ( 'debug.txt', 'Current dimension: ' | currentDimension );
+WHILE ( currentDimension @<> '' );
+  #ASCIIOUTPUT ( 'debug.txt', 'Current dimension: ' | currentDimension );
+  dimensionCount = dimensionCount + 1;
+  currentDimension =  TabDim ( pCubeName, dimensionCount );
+END;
+dimensionCount = dimensionCount - 1;
+
+lastDimension = TabDim ( pCubeName, dimensionCount );
+
+#ASCIIOUTPUT ( 'debug.txt', 'Dim count: ' | NumberToString ( dimensionCount ) | ' Last Dimension: ' | lastDimension );
+
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( dimensionCount = 2 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2 ) = 1 );
+      IF ( DTYPE ( lastDimension, V2 ) @= 'N' % DTYPE ( lastDimension, V2 ) @= 'AN'  );
+         CELLPUTN ( StringToNumber ( V3 ), pCubeName, V1, V2 );
+      ELSEIF ( DTYPE ( lastDimension, V2 ) @= 'S' % DTYPE ( lastDimension, V2 ) @= 'AS' % DTYPE ( lastDimension, V2 ) @= 'AA' );  
+         CELLPUTS ( V3, pCubeName, V1, V2 );
+      ENDIF;
+   ENDIF;
+
+ELSEIF ( dimensionCount = 3 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3 ) = 1 );
+      IF ( DTYPE ( lastDimension, V3 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V4 ), pCubeName, V1, V2, V3 );
+      ELSEIF ( DTYPE ( lastDimension, V3 ) @= 'S');  
+         CELLPUTS ( V4, pCubeName, V1, V2, V3 );
+      ENDIF;
+   ENDIF;
+
+ELSEIF ( dimensionCount = 4 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4 ) = 1 );
+      IF ( DTYPE ( lastDimension, V4 ) @= 'N');
+          CELLPUTN ( StringToNumber ( V5 ), pCubeName, V1, V2, V3, V4 );
+       ELSEIF ( DTYPE ( lastDimension, V4 ) @= 'S');  
+           CELLPUTS ( V5, pCubeName, V1, V2, V3, V4 );
+       ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 5 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5 ) = 1 );
+      IF ( DTYPE ( lastDimension, V5 ) @= 'N');
+          CELLPUTN ( StringToNumber ( V6 ), pCubeName, V1, V2, V3, V4, V5 );
+       ELSEIF ( DTYPE ( lastDimension, V6 ) @= 'S');  
+          CELLPUTS ( V4, pCubeName, V1, V2, V3, V4, V5 );
+       ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 6 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6 ) = 1 );
+      IF ( DTYPE ( lastDimension, V6 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V7 ), pCubeName, V1, V2, V3, V4, V5, V6 );
+       ELSEIF ( DTYPE ( lastDimension, V6 ) @= 'S');  
+         CELLPUTS ( V7, pCubeName, V1, V2, V3, V4, V5, V6 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 7 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7 ) = 1 );
+      IF ( DTYPE ( lastDimension, V7 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V8 ), pCubeName, V1, V2, V3, V4, V5, V6, V7 );
+      ELSEIF ( DTYPE ( lastDimension, V7 ) @= 'S');  
+         CELLPUTS ( V8, pCubeName, V1, V2, V3, V4, V5, V6, V7 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 8 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8 ) = 1 );
+      IF ( DTYPE ( lastDimension, V8 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V9 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8 );
+      ELSEIF ( DTYPE ( lastDimension, V8 ) @= 'S');  
+         CELLPUTS ( V9, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 9 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9 ) = 1 );
+      IF ( DTYPE ( lastDimension, V9 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V10 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9 );
+       ELSEIF ( DTYPE ( lastDimension, V9 ) @= 'S');  
+          CELLPUTS ( V10, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9 );
+       ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 10 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10 ) = 1 );
+      IF ( DTYPE ( lastDimension, V10 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V11 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10 );
+       ELSEIF ( DTYPE ( lastDimension, V10 ) @= 'S');  
+         CELLPUTS ( V11, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10 );
+       ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 11 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11 ) = 1 );
+      IF ( DTYPE ( lastDimension, V11 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V12 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11 );
+      ELSEIF ( DTYPE ( lastDimension, V11 ) @= 'S');  
+         CELLPUTS ( V12, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 12 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12 ) = 1 );
+      IF ( DTYPE ( lastDimension, V12 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V13 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12 );
+      ELSEIF ( DTYPE ( lastDimension, V12 ) @= 'S');  
+         CELLPUTS ( V13, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 13 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13 ) = 1 );
+      IF ( DTYPE ( lastDimension, V13 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V14 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13 );
+      ELSEIF ( DTYPE ( lastDimension, V13 ) @= 'S');  
+         CELLPUTS ( V14, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 14 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14 ) = 1 );
+      IF ( DTYPE ( lastDimension, V14 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V15 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14 );
+      ELSEIF ( DTYPE ( lastDimension, V14 ) @= 'S');  
+         CELLPUTS ( V15, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 15 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15 ) = 1 );
+      IF ( DTYPE ( lastDimension, V15 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V16 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15 );
+     ELSEIF ( DTYPE ( lastDimension, V15 ) @= 'S');  
+        CELLPUTS ( V16, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15 );
+      ENDIF;
+   ENDIF;
+   
+ELSEIF ( dimensionCount = 16 );
+   IF ( CellIsUpdateable ( pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16 ) = 1 );
+      IF ( DTYPE ( lastDimension, V16 ) @= 'N');
+         CELLPUTN ( StringToNumber ( V17 ), pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16 );
+      ELSEIF ( DTYPE ( lastDimension, V16 ) @= 'S');  
+        CELLPUTS ( V17, pCubeName, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16 );
+      ENDIF;
+   ENDIF;  
+ENDIF;
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

@@ -1,0 +1,25 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.Copy.Dimension",
+	"Code@Code.link":"Diag.Model.Copy.Dimension.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pSourceDimension",
+			"Prompt":"",
+			"Value":"ExportTest_D5",
+			"Type":"String"
+		},
+		{
+			"Name":"pTargetDimension",
+			"Prompt":"",
+			"Value":"ExportTest_D5_CP",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

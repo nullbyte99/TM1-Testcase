@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Model.CubeDeleteCascade",
+	"Code@Code.link":"Diag.Model.CubeDeleteCascade.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubeName",
+			"Prompt":"",
+			"Value":"CopyOfExportTest",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

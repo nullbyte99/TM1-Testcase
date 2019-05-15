@@ -1,0 +1,37 @@
+{
+	"@type":"Subset",
+	"Name":"Level_0",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export01')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export02')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export03')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export04')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export05')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export06')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export07')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export08')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export09')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D1')/Hierarchies('ExportTest_D1')/Elements('export10')"
+		}
+	]
+}

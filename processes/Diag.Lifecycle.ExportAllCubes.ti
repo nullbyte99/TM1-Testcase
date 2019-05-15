@@ -1,0 +1,82 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+DatasourceASCIIQuoteCharacter='';
+
+vnow = CELLGETS ( 'diag.control.cube', 'current datetime', 'value' ) ;
+slash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
+exportDir = CELLGETS ( 'diag.control.cube', 'export directory', 'value' );
+
+
+IF ( DIMENSIONEXISTS ( '}ExportCubes' ) = 1 );
+   DIMENSIONDESTROY ( '}ExportCubes' );
+ENDIF;
+DIMENSIONCREATE ( '}ExportCubes' );
+
+vCount = 1; 
+vCubeName = DIMNM ( '}Cubes', vCount );
+WHILE ( vCubeName @<> '' );
+    vLine = vCubeName;   
+    vDimCount = 1;
+    vDimName = TABDIM ( vCubeName, vDimCount );
+    WHILE ( vDimName @<> '' );
+          vLine = vLine | ':' | vDimName;
+          vDimCount = vDimCount + 1;
+          vDimName = TABDIM ( vCubeName, vDimCount );
+    END;
+
+    IF ( CubeExists ( vCubeName ) = 1 & SUBST ( vCubeName, 1, 1) @<> '}' ) ;
+        ASCIIOUTPUT ( pOutputDirectory | 'cubes.txt', vLine );
+        DimensionElementInsertDirect ( '}ExportCubes', '', vLine, 'N' ); 
+        ExecuteProcess ( 'Diag.Lifecycle.ExportCube', 'pCubeName', vCubeName, 'pOutputDirectory', pOutputDirectory, 'pIncludeSecurity', pIncludeSecurity );
+
+         vCellSecurityCube = '}CellSecurity_' | vCubeName;
+         IF ( CUBEEXISTS ( vCellSecurityCube ) = 1 & pIncludeSecurity @= 'Y' );
+         vLine = vCellSecurityCube;   
+         vDimCount = 1;
+         vDimName = TABDIM ( vCellSecurityCube, vDimCount );
+         WHILE ( vDimName @<> '' );
+               vLine = vLine | ':' | vDimName;
+               vDimCount = vDimCount + 1;
+               vDimName = TABDIM ( vCellSecurityCube, vDimCount );
+         END;
+         ASCIIOUTPUT ( pOutputDirectory | 'cubes.txt', vLine );
+         DimensionElementInsertDirect ( '}ExportCubes', '', vLine, 'N' ); 
+         ExecuteProcess ( 'Diag.Lifecycle.ExportCube', 'pCubeName', vCellSecurityCube, 'pOutputDirectory', pOutputDirectory, 'pIncludeSecurity', 'N' );
+ENDIF;
+
+
+    ELSEIF ( CubeExists ( vCubeName ) = 1 & pIncludeSecurity @= 'Y' & ( vCubeName @= '}DimensionSecurity' % vCubeName @= '}CubeSecurity'  % vCubeName @= '}ClientGroups' ) );
+        ASCIIOUTPUT ( pOutputDirectory | 'cubes.txt', vLine );
+        DimensionElementInsertDirect ( '}ExportCubes', '', vLine, 'N' ); 
+        ExecuteProcess ( 'Diag.Lifecycle.ExportCube', 'pCubeName', vCubeName, 'pOutputDirectory', pOutputDirectory, 'pIncludeSecurity', pIncludeSecurity );
+    ENDIF;
+
+    vCount = vCount + 1;
+    vCubeName = DIMNM ( '}Cubes', vCount );
+END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

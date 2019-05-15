@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Config.ControlCubeCreate",
+	"Code@Code.link":"Diag.Config.ControlCubeCreate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"rebuild",
+			"Prompt":"",
+			"Value":"Y",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

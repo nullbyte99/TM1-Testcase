@@ -1,0 +1,25 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+RunProcess ( 'Diag.LockTest.CreateDimension', 'pDimensionName', 'LockTest_D1', 'pDimensionSize', 50000, 'pSleep', 'Y' );
+RunProcess ( 'Diag.LockTest.CreateDimension', 'pDimensionName', 'LockTest_D2', 'pDimensionSize', 50000, 'pSleep', 'N' );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

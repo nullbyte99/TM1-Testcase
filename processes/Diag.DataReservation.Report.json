@@ -1,0 +1,37 @@
+{
+	"@type":"Process",
+	"Name":"Diag.DataReservation.Report",
+	"Code@Code.link":"Diag.DataReservation.Report.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForClient":"}Clients",
+		"dataSourceNameForServer":"}Clients",
+		"subset":"TestUsers"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubeName",
+			"Prompt":"",
+			"Value":"Cube1",
+			"Type":"String"
+		},
+		{
+			"Name":"pDensity",
+			"Prompt":"",
+			"Value":100,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vUser",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

@@ -1,0 +1,121 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+queueDir = CellGetS ( 'diag.control.cube', 'queue directory', 'value' );
+
+i = 1;
+dimensionName = TABDIM ( pTargetCubeName, i );
+WHILE ( dimensionName @<> '' );
+   i = i + 1;
+   dimensionName = TABDIM ( pTargetCubeName, i );
+   IF ( i > 17 );
+      PROCESSQUIT;
+   ENDIF;
+END;
+
+dimensionCount = i - 1;
+
+
+
+DataSourceType='CHARACTERDELIMITED';
+DatasourceNameForServer=pFileName;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+
+
+
+
+
+IF ( dimensionCount = 2 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2 ) = 1);
+      CELLPUTN ( StringToNumber(dim3), pTargetCubeName, dim1, dim2 );
+   ENDIF;
+ELSEIF ( dimensionCount = 3 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3 ) = 1);
+      CELLPUTN ( StringToNumber(dim4), pTargetCubeName, dim1, dim2, dim3 );
+   ENDIF;
+ELSEIF ( dimensionCount = 4 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4 ) = 1);
+      CELLPUTN ( StringToNumber(dim5), pTargetCubeName, dim1, dim2, dim3, dim4 );
+   ENDIF;
+ELSEIF ( dimensionCount = 5 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5 ) = 1);
+      CELLPUTN ( StringToNumber(dim6), pTargetCubeName, dim1, dim2, dim3, dim4, dim5 );
+   ENDIF;
+ELSEIF ( dimensionCount = 6 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6 ) = 1);
+      CELLPUTN ( StringToNumber(dim7), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6 );
+   ENDIF;
+ELSEIF ( dimensionCount = 7 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7 ) = 1);
+      CELLPUTN ( StringToNumber(dim8), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+   ENDIF;
+ELSEIF ( dimensionCount = 8 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 ) = 1);
+      CELLPUTN ( StringToNumber(dim9), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+   ENDIF;
+ELSEIF ( dimensionCount = 9 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 ) = 1);
+      CELLPUTN ( StringToNumber(dim10), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+   ENDIF;
+ELSEIF ( dimensionCount = 10);
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 ) = 1);
+      CELLPUTN ( StringToNumber(dim11), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+   ENDIF;
+ELSEIF ( dimensionCount = 11 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 ) = 1);
+      CELLPUTN ( StringToNumber(dim12), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+   ENDIF;
+ELSEIF ( dimensionCount = 12 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 ) = 1);
+      CELLPUTN ( StringToNumber(dim13), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12  );
+   ENDIF;
+ELSEIF ( dimensionCount = 13 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 ) = 1);
+      CELLPUTN ( StringToNumber(dim14), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+   ENDIF;
+ELSEIF ( dimensionCount = 14);
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 ) = 1);
+      CELLPUTN ( StringToNumber(dim15), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+   ENDIF;
+ELSEIF ( dimensionCount = 15 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 ) = 1);
+      CELLPUTN ( StringToNumber(dim16), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+   ENDIF;
+ELSEIF ( dimensionCount = 16 );
+   IF (CELLISUPDATEABLE  ( pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 ) = 1);
+      CELLPUTN ( StringToNumber(dim17), pTargetCubeName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+   ENDIF;
+ENDIF;
+
+
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+ASCIIOUTPUT ( queueDir | pElementName | '.done', pElementName );
+#endregion

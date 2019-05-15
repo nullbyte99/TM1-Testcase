@@ -1,0 +1,12 @@
+{
+	"@type":"Hierarchy",
+	"Name":"diag.dummy.dim13",
+	"Elements":
+	[
+		{
+			"Name":"diag.dummy.element",
+			"Type":"Numeric"
+		}
+	],
+	"Subsets@Code.links":[]
+}

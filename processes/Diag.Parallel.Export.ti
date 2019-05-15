@@ -1,0 +1,130 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+vNow = NumberToString( NOW );
+
+sourceViewName = '}temp_' | pElementName;
+IF ( ViewExists ( pCubeName, sourceViewName ) = 1 );
+    ViewDestroy ( pCubeName, sourceViewName );
+ENDIF; 
+ViewCreate ( pCubeName, sourceViewName, 1 );
+
+i = 1;
+dimensionName = TABDIM ( pCubeName, i );
+WHILE ( dimensionName @<> '' );
+   i = i + 1;
+   dimensionName = TABDIM ( pCubeName, i );
+   IF ( dimensionName @<> '' );
+   ENDIF;
+END;
+
+dimensionCount = i - 1;
+i = 1;
+currentDim = TABDIM ( pCubeName, i );
+WHILE ( currentDim @<> '' );
+    subsetName = '}temp_' | currentDim | '_' | pElementName | '_' | vNow;
+    ViewRowDimensionSet ( pCubeName, sourceViewName, currentDim, i );
+     IF ( currentDim  @= pSplitDimension);
+         IF (SubsetExists ( currentDim, subsetName ) = 1 );
+            SubsetDestroy ( currentDim, subsetName ); 
+          ENDIF;
+          SubsetCreate ( currentDim, subsetName, 1 );
+          SubsetElementInsert (  currentDim, subsetName, pElementName, 1 );
+          ViewSubsetAssign ( pCubeName, sourceViewName, currentDim, subsetName );
+       ELSE;
+           IF (SubsetExists ( currentDim, subsetName ) = 1 );
+	SubsetDestroy ( currentDim, subsetName ); 
+	  ENDIF;
+	  SubsetCreate ( currentDim, subsetName, 1 );
+	   j = 1;
+	  WHILE ( j <= DIMSIZ ( currentDim ) );
+	      currentElement = DIMNM ( currentDim, j );
+	      IF ( ELLEV (currentDim, currentElement ) = 0);
+	          SubsetElementInsert (  currentDim, subsetName, currentElement, SubsetGetSize ( currentDim, subsetName ) + 1 );
+	      ENDIF;
+	       j = j + 1;
+	   END; 
+	   ViewSubsetAssign ( pCubeName, sourceViewName, currentDim, subsetName );
+	ENDIF;
+           i = i + 1;
+          currentDim = TABDIM ( pCubeName, i );
+       END;
+
+fullFileName = pExportDir | pElementName | '.csv';
+
+ViewExtractSkipZeroesSet ( pCubeName, sourceViewName, 0 );
+ViewExtractSkipCalcsSet ( pCubeName, sourceViewName, 1);
+ViewConstruct ( pCubeName, sourceViewName );
+
+DataSourceType='VIEW';
+DatasourceNameForServer=pCubeName;
+DatasourceCubeview=sourceViewName;
+
+DatasourceASCIIQuoteCharacter='';
+DatasourceASCIIDelimiter=Char(9);
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+IF ( dimensionCount = 2 );
+   ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3 );
+ELSEIF ( dimensionCount = 3 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4 );
+ELSEIF ( dimensionCount = 4 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5 );
+ELSEIF ( dimensionCount = 5 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6 );
+ELSEIF ( dimensionCount = 6 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+ELSEIF ( dimensionCount = 7 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+ELSEIF ( dimensionCount = 8 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+ELSEIF ( dimensionCount = 9 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+ELSEIF ( dimensionCount = 10);
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+ELSEIF ( dimensionCount = 11 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 );
+ELSEIF ( dimensionCount = 12 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+ELSEIF ( dimensionCount = 13 );
+    ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+ELSEIF ( dimensionCount = 14);
+   ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+ELSEIF ( dimensionCount = 15 );
+   ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+ELSEIF ( dimensionCount = 16 );
+   ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17 );
+ELSEIF ( dimensionCount = 17 );
+  ASCIIOUTPUT ( fullFileName, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17, dim18 );
+ENDIF;
+
+
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+queueDir = CellGetS ( 'diag.control.cube', 'queue directory', 'value' );
+ASCIIOUTPUT ( queueDir | pElementName | '.done', pElementName );
+
+#RunProcess ( 'Diag.ParallelDataLoad.LoadData', 'pCubeName', pCubeName, 'pFileName', fullFileName, 'pElementName', pElementName );
+#endregion

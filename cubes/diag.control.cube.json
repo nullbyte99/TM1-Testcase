@@ -1,0 +1,18 @@
+{
+	"@type":"Cube",
+	"Name":"diag.control.cube",
+	"Rules@Code.link":"diag.control.cube.rules",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('diag.control.dimension')"
+		},
+		{
+			"@id":"Dimensions('diag.control.value')"
+		}
+	],
+	"Views@Code.links":
+	[
+		"diag.control.cube.views/Default.json"
+	]
+}

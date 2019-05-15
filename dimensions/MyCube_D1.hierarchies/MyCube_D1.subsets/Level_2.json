@@ -1,0 +1,10 @@
+{
+	"@type":"Subset",
+	"Name":"Level_2",
+	"Elements":
+	[
+		{
+			"@id":"Dimensions('MyCube_D1')/Hierarchies('MyCube_D1')/Elements('L2_E1')"
+		}
+	]
+}

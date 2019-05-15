@@ -1,0 +1,20 @@
+{
+	"@type":"Cube",
+	"Name":"diag.ti.stats",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('}Processes')"
+		},
+		{
+			"@id":"Dimensions('diag.ti.stats.lines')"
+		},
+		{
+			"@id":"Dimensions('diag.ti.stats')"
+		}
+	],
+	"Views@Code.links":
+	[
+		"diag.ti.stats.views/Default.json"
+	]
+}

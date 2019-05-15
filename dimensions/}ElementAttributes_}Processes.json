@@ -1,0 +1,13 @@
+{
+	"@type":"Dimension",
+	"Name":"}ElementAttributes_}Processes",
+	"AllLeavesHierarchyName":"",
+	"DefaultHierarchy":
+	{
+		"@id":"Dimensions('}ElementAttributes_}Processes')/Hierarchies('}ElementAttributes_}Processes')"
+	},
+	"Hierarchies@Code.links":
+	[
+		"}ElementAttributes_}Processes.hierarchies/}ElementAttributes_}Processes.json"
+	]
+}

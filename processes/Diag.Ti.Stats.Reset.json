@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Ti.Stats.Reset",
+	"Code@Code.link":"Diag.Ti.Stats.Reset.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

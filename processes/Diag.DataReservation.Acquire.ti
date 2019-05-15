@@ -1,0 +1,66 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+vNow = NumberToString( NOW );
+
+#vUser = TM1USER();
+
+vViewName = 'TEMP_' | vNow;
+IF ( ViewExists ( pCubeName, vViewName ) = 1 );
+   ViewDestroy ( pCubeName, vViewName );
+ENDIF;
+ViewCreate ( pCubeName, vViewName, 1 );
+
+i = 1;
+currentDim = TABDIM ( pCubeName, i );
+WHILE ( currentDim @<> '' );
+   subsetName = 'TEMP_' | vNow;
+   IF (SubsetExists ( currentDim, subsetName ) = 1 );
+      SubsetDestroy ( currentDim, subsetName); 
+   ENDIF;
+   SubsetCreate ( currentDim, subsetName, 1 );
+   j = 1;
+   WHILE ( j <= DIMSIZ (currentDim) );
+      currentElement = DIMNM ( currentDim, j );
+      IF ( ELLEV (currentDim, currentElement ) = 0 );
+         SubsetElementInsert (  currentDim, subsetName, currentElement, SubsetGetSize ( currentDim, subsetName ) + 1 );
+      ENDIF;
+       j = j + 1;
+   END; 
+   ViewSubsetAssign ( pCubeName, vViewName, currentDim, subsetName);
+    i = i + 1;
+   currentDim = TABDIM ( pCubeName, i );
+END;
+
+ViewExtractSkipZeroesSet ( pCubeName, vViewName, 0 );
+ViewExtractSkipCalcsSet ( pCubeName, vViewName, 1);
+ViewConstruct ( pCubeName, vViewName );
+
+DataSourceType='VIEW';
+DatasourceNameForServer=pCubeName;
+DatasourceCubeview=vViewName;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+IF ( RAND * 100 < pDensity );
+   vTuple = d1 | ',' | d2;
+   CubeDataReservationAcquire ( pCubeName, pUser, 1, vTuple, ',' );
+ENDIF;
+
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion

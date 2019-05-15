@@ -1,0 +1,144 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+vNow = NumberToString( NOW );
+
+IF ( CubeExists ( pCubeName ) = 1 &  pRecreateCube @= 'Y' );
+   #CubeDestroy ( pCubeName );
+   ExecuteProcess ( 'Diag.Model.CubeDeleteCascade', 'pCubeName', pCubeName );
+ENDIF;
+
+delimiterCharacter = ',';
+dimSizes = pDimensionSizes;
+dimElementNameSizes = 8;
+
+dimNameCharPos = 1;
+dimSizeCharPos = 1;
+dimElementNameSizesCharPos = 1;
+
+createCubeDimsTemp = 'Diag.DimensionTracker';
+IF ( DIMENSIONEXISTS ( createCubeDimsTemp ) = 1 );
+   DIMENSIONDESTROY ( createCubeDimsTemp );
+ENDIF;
+DIMENSIONCREATE ( createCubeDimsTemp );
+
+i = 1;
+WHILE ( i <= pDimensionCount );
+   IF ( i < pDimensionCount  );
+       #DimNameDelimiterPos = SCAN ( pDimensionNameDelimiter, dimNames ) - 1;
+       #currentDimName = TRIM ( SUBST ( dimNames, 1, DimNameDelimiterPos ) );  
+       #dimNames = SUBST ( dimNames, DimNameDelimiterPos + 2,  LONG ( dimNames ) - DimNameDelimiterPos );
+
+       DimSizeDelimiterPos = SCAN ( delimiterCharacter, dimSizes ) - 1;
+       currentDimSize = TRIM ( SUBST ( dimSizes, 1, DimSizeDelimiterPos ) );  
+       dimSizes = SUBST ( dimSizes, DimSizeDelimiterPos + 2,  LONG ( dimSizes ) - DimSizeDelimiterPos );
+
+       #dimElementNameSizesCharPos = SCAN ( pDimensionNameDelimiter, dimElementNameSizes ) - 1;
+       #currentdimElementNameSizes = TRIM ( SUBST ( dimElementNameSizes, 1, dimElementNameSizesCharPos ) );  
+       #dimElementNameSizes = SUBST ( dimElementNameSizes, dimElementNameSizesCharPos + 2,  LONG ( dimElementNameSizes ) - dimElementNameSizesCharPos );
+
+      currentDimName = pCubeName | '_D' | NumberToString ( i );
+
+      IF ( DimensionExists ( currentDimName ) = 0);
+         ExecuteProcess( 'Diag.Model.DimensionCreate', 'pDimensionName', currentDimName, 'pNumberOfElements', StringToNumber ( currentDimSize ), 'pElementNameLength', pElementNameSize, 'pParentElement', 'F'); 
+      ENDIF;
+
+      DimensionElementInsertDirect ( createCubeDimsTemp, '', currentDimName, 'N');      
+
+   ELSEIF ( i = pDimensionCount );
+       #currentDimName = TRIM ( dimNames );
+       currentDimSize =  TRIM ( dimSizes );
+       currentDimName = pCubeName | '_D' | NumberToString ( i );
+
+      IF ( DimensionExists ( currentDimName ) = 0);
+          ExecuteProcess( 'Diag.Model.DimensionCreate', 'pDimensionName', currentDimName, 'pNumberOfElements', StringToNumber ( currentDimSize ), 'pElementNameLength', pElementNameSize , 'pParentElement', 'T'); 
+      ENDIF;
+
+      DimensionElementInsertDirect ( createCubeDimsTemp , '', currentDimName, 'N');      
+   ENDIF; 
+   i = i + 1;
+END;
+
+IF ( pDimensionCount = 2);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ) );
+   CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ) );
+ELSEIF ( pDimensionCount = 3);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ) );
+ELSEIF ( pDimensionCount = 4);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ) );
+ELSEIF ( pDimensionCount = 5);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ) );
+ELSEIF ( pDimensionCount = 6);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ) );
+ELSEIF ( pDimensionCount = 7);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ) );
+ELSEIF ( pDimensionCount = 8);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ) );
+ELSEIF ( pDimensionCount = 9);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ) );
+ELSEIF ( pDimensionCount = 10);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ) );
+ELSEIF ( pDimensionCount = 11);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 11 ) );
+ELSEIF ( pDimensionCount = 12);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ) );
+ELSEIF ( pDimensionCount = 13);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ), DIMNM ( createCubeDimsTemp, 13 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 13 ) );
+ELSEIF ( pDimensionCount = 14);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ), DIMNM ( createCubeDimsTemp, 13 ), DIMNM ( createCubeDimsTemp, 14 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 13 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 14 ) );
+ELSEIF ( pDimensionCount = 15);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ), DIMNM ( createCubeDimsTemp, 13 ), DIMNM ( createCubeDimsTemp, 14 ), DIMNM ( createCubeDimsTemp, 15 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 13 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 14 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 15 ) );
+ELSEIF ( pDimensionCount = 16);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ), DIMNM ( createCubeDimsTemp, 13 ), DIMNM ( createCubeDimsTemp, 14 ), DIMNM ( createCubeDimsTemp, 15 ), DIMNM ( createCubeDimsTemp, 16 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 13 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 14 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 15 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 16 ) );
+ELSEIF ( pDimensionCount = 17);
+    CubeCreate ( pCubeName, DIMNM ( createCubeDimsTemp, 1 ), DIMNM ( createCubeDimsTemp, 2 ), DIMNM ( createCubeDimsTemp, 3 ), DIMNM ( createCubeDimsTemp, 4 ), DIMNM ( createCubeDimsTemp, 5 ), DIMNM ( createCubeDimsTemp, 6 ), DIMNM ( createCubeDimsTemp, 7 ), DIMNM ( createCubeDimsTemp, 8 ), DIMNM ( createCubeDimsTemp, 9 ), DIMNM ( createCubeDimsTemp, 10 ), DIMNM ( createCubeDimsTemp, 11 ), DIMNM ( createCubeDimsTemp, 12 ), DIMNM ( createCubeDimsTemp, 13 ), DIMNM ( createCubeDimsTemp, 14 ), DIMNM ( createCubeDimsTemp, 15 ), DIMNM ( createCubeDimsTemp, 16 ), DIMNM ( createCubeDimsTemp, 17 ) );
+    CellPutN ( 1, pCubeName, DIMNM ( DIMNM ( createCubeDimsTemp, 1 ), 1), DIMNM ( DIMNM ( createCubeDimsTemp, 2 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 3 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 4 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 5 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 6 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 7 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 8 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 9 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 11 ), 1 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 12 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 13 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 14 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 15 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 16 ), DIMNM ( DIMNM ( createCubeDimsTemp, 10 ), 17 ) );
+ENDIF;
+
+CubeSetLogChanges( pCubeName, 0 );
+
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+
+IF ( DIMENSIONEXISTS ( createCubeDimsTemp ) = 1 );
+   DIMENSIONDESTROY ( createCubeDimsTemp );
+ENDIF;
+#endregion

@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Diag.Config.ClearExports",
+	"Code@Code.link":"Diag.Config.ClearExports.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

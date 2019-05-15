@@ -1,0 +1,15 @@
+['current date', 'value'] = S:DATE (NOW);
+['current time', 'value'] = S:TIME;
+['current year', 'value'] = S:TRIM( STR (YEAR ( DATE (NOW) ), 2, 0) );
+['current month', 'value'] = S:TRIM ( STR (MONTH ( DATE (NOW) ), 2, 0) );
+['current day', 'value'] = S:TRIM ( STR ( DAY ( DATE ( NOW ) ), 2, 0) );
+['current datetime', 'value'] = S:TIMST ( NOW, '\Y\m\d\h\i\s' );
+['slash', 'value'] = S:IF ( DB ( 'diag.control.cube', 'platform', 'value' ) @= 'WIN', '\', IF ( DB ( 'diag.control.cube', 'platform', 'value' ) @= 'IX', '/', STET ) );
+['scripts directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'scripts' | DB('diag.control.cube', 'slash', 'value' );
+['scramble directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'scramble' | DB('diag.control.cube', 'slash', 'value' );
+['backup directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'backup' | DB('diag.control.cube', 'slash', 'value' );
+['import directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'import' | DB('diag.control.cube', 'slash', 'value' );
+['export directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'export' | DB('diag.control.cube', 'slash', 'value' );
+['queue directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'queue' | DB('diag.control.cube', 'slash', 'value' );
+['data directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'data' | DB('diag.control.cube', 'slash', 'value' );
+['logs directory', 'value'] = S:DB('diag.control.cube', 'model directory', 'value' ) | 'logs' | DB('diag.control.cube', 'slash', 'value' );

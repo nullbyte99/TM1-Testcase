@@ -1,0 +1,37 @@
+{
+	"@type":"Process",
+	"Name":"Diag.CellSecurity.CreateReport",
+	"Code@Code.link":"Diag.CellSecurity.CreateReport.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCubeName",
+			"Prompt":"",
+			"Value":"plan_BudgetPlan",
+			"Type":"String"
+		},
+		{
+			"Name":"pCell",
+			"Prompt":"",
+			"Value":"FY 2004 Budget, UK, Direct, Sales, Local, input, Jan-2004",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelimiter",
+			"Prompt":"",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pClient",
+			"Prompt":"",
+			"Value":"CAMID(\"CJP:60\")",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

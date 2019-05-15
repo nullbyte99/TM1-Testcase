@@ -1,0 +1,23 @@
+{
+	"@type":"Cube",
+	"Name":"CopyOfExportTest",
+	"Dimensions":
+	[
+		{
+			"@id":"Dimensions('ExportTest_D1')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D2')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D3')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D4')"
+		},
+		{
+			"@id":"Dimensions('ExportTest_D5')"
+		}
+	],
+	"Views@Code.links":[]
+}

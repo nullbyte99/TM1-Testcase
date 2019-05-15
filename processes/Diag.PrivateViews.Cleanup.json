@@ -1,0 +1,19 @@
+{
+	"@type":"Process",
+	"Name":"Diag.PrivateViews.Cleanup",
+	"Code@Code.link":"Diag.PrivateViews.Cleanup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pDEBUG",
+			"Prompt":"Enable debug",
+			"Value":"F",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}
