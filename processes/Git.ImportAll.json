@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Git.ImportAll",
+	"Code@Code.link":"Git.ImportAll.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}

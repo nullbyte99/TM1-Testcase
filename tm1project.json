@@ -4,8 +4,7 @@
     {
         "ImportData":
         {
-            "Process": "Processes('}src_sync')",
-            "Parameters": [ { "Name": "op", "Value": "1" } ]
+            "Process": "Processes('}Git.ImportAll')"
         },
         "ExportData":
         {
@@ -29,9 +28,6 @@
     	"!Dimensions('}ElementAttributes_}Processes')",
     	"!Cubes('}ElementAttributes_}Processes')",
 		"Cubes('ExportTest')",
-		"Cubes('MyCube')",
-        "!Processes('}src_imp_attrs')",
-        "!Processes('}src_imp_cube')",
-        "!Processes('}src_sync')"
+		"Cubes('MyCube')"
     ]
 }

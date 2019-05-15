@@ -1,29 +1,29 @@
 {
 	"@type":"Process",
-	"Name":"}src_imp_cube",
-	"Code@Code.link":"}src_imp_cube.ti",
+	"Name":"Git.ImportCube",
+	"Code@Code.link":"Git.ImportCube.ti",
 	"DataSource":
 	{
 		"Type":"ASCII",
 		"asciiDecimalSeparator":".",
-		"asciiDelimiterChar":",",
+		"asciiDelimiterChar":"\t",
 		"asciiDelimiterType":"Character",
 		"asciiHeaderRecords":0,
-		"asciiQuoteCharacter":"\"",
+		"asciiQuoteCharacter":"",
 		"asciiThousandSeparator":",",
-		"dataSourceNameForClient":"dummy_cube_data.dat",
-		"dataSourceNameForServer":"dummy_cube_data.dat"
+		"dataSourceNameForClient":"D:\\stuart\\models\\Testcase\\data\\dummy.txt",
+		"dataSourceNameForServer":"D:\\TM1Models\\PlanSamp\\dummy.txt"
 	},
 	"Parameters":
 	[
 		{
-			"Name":"cube_name",
+			"Name":"pCubeName",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"
 		},
 		{
-			"Name":"data_dir",
+			"Name":"pFileName",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"

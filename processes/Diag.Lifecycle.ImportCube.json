@@ -11,7 +11,7 @@
 		"asciiHeaderRecords":0,
 		"asciiQuoteCharacter":"",
 		"asciiThousandSeparator":",",
-		"dataSourceNameForClient":"D:\\stuart\\models\\TestcaseMaster\\dummy.txt",
+		"dataSourceNameForClient":"D:\\stuart\\models\\Testcase\\data\\dummy.txt",
 		"dataSourceNameForServer":"D:\\TM1Models\\PlanSamp\\dummy.txt"
 	},
 	"Parameters":

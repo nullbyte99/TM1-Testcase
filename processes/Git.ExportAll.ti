@@ -15,7 +15,7 @@ element_count = DIMSIZ(cubes_ctrl_dimension);
 element_index = 1;
 WHILE(element_index <= element_count);
   cube_name = DIMNM(cubes_ctrl_dimension, element_index);
-  IF ( SCAN ( 'diag.', LOWER ( cube_name ) ) = 1  );
+  IF ( SCAN ( 'diag.', LOWER ( cube_name ) ) = 1 );
       EXECUTEPROCESS ( 'Git.ExportCube', 'pCubeName', cube_name, 'pOutputDirectory', dataExportDir );
   ENDIF;
   element_index = element_index + 1;
@@ -31,14 +31,16 @@ element_count = DIMSIZ(dimensions_ctrl_dimension);
 element_index = 1;
 WHILE(element_index <= element_count);
   dimension_name = DIMNM(dimensions_ctrl_dimension, element_index);
-  IF(SCAN('}', dimension_name) <> 1);
-    attribute_dimension_name = '}ElementAttributes_'|dimension_name;
-    IF(CUBEEXISTS(attribute_dimension_name) = 1);
+  IF ( SCAN ( '}', dimension_name) <> 1);
+    attribute_dimension_name = '}ElementAttributes_' | dimension_name;
+    IF ( CUBEEXISTS ( attribute_dimension_name ) = 1);
      EXECUTEPROCESS ( 'Git.ExportCube', 'pCubeName', cube_name, 'pOutputDirectory', dataExportDir );
     ENDIF;
   ENDIF;
   element_index = element_index + 1;
 END;
+
+EXECUTEPROCESS ( 'Git.ExportCube', 'pCubeName', '}ElementAttributes_}Processes', 'pOutputDirectory', dataExportDir );
 
 #endregion
 #region Metadata

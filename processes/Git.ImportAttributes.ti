@@ -3,7 +3,7 @@
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-file_name = data_dir|'attributes.csv';
+file_name = pImportDir | 'attributes.csv';
 
 DatasourceType = 'CHARACTERDELIMITED';
 DatasourceNameForServer = file_name;
@@ -21,4 +21,14 @@ ELSEIF(V3@='AS');
 ELSEIF(V3@='AN');
   ATTRINSERT(V1, '', V2, 'N');
 ENDIF;
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
 #endregion
