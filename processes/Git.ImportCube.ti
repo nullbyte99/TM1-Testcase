@@ -3,10 +3,12 @@
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-LogOutput ( 'INFO', 'IMPORTING CUBE - ' | pCubeName );
+#LogOutput ( 'INFO', 'IMPORTING CUBE - ' | pCubeName );
+
+vImportFile = pImportdir | pCubeName | '.dat';
 
 DatasourceType = 'CHARACTERDELIMITED';
-DatasourceNameForServer=pFileName;
+DatasourceNameForServer = vImportFile;
 
 IF ( CubeExists ( pCubeName ) = 0 );
    ProcessError;

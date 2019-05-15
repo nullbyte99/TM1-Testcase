@@ -11,7 +11,7 @@
 ###################################
 
 vSlash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
-cubeExportFile = pOutputDirectory | pCubeName | '.cube';
+cubeExportFile = pOutputDirectory | pCubeName | '.dat';
 
 LOGOUTPUT ( 'INFO', 'Exporting Cube ' | pCubeName );
 

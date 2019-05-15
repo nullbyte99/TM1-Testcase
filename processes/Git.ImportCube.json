@@ -23,7 +23,7 @@
 			"Type":"String"
 		},
 		{
-			"Name":"pFileName",
+			"Name":"pImportDir",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"

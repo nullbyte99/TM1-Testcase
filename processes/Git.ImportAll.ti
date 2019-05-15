@@ -3,10 +3,7 @@
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-importDir = '}GitExport';
-
-ExecuteCommand( 'cmd /c mkdir "' | importDir | '"', 1 );
-importDir = importDir | '\';
+importDir = '}GitExport/';
 
 ### Cube data ###
 cubes_ctrl_dimension = '}Cubes';
@@ -34,7 +31,7 @@ WHILE(element_index <= element_count);
   IF(SCAN('}', dimension_name) <> 1);
     attribute_dimension_name = '}ElementAttributes_'|dimension_name;
     IF(CUBEEXISTS(attribute_dimension_name) = 1);
-      EXECUTEPROCESS ( 'Git.ImportCube', 'pCubeName', attribute_dimension_name, 'pImportDir', importDir );
+      EXECUTEPROCESS ( 'Git.ImportCube', 'pCubeName', attribute_dimension_name, 'pFileName', importDir );
     ENDIF;
   ENDIF;
   element_index = element_index + 1;
