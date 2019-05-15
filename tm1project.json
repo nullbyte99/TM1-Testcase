@@ -4,7 +4,7 @@
     {
         "ImportData":
         {
-            "Process": "Processes('}Git.ImportAll')"
+            "Process": "Processes('Git.ImportAll')"
         },
         "ExportData":
         {
