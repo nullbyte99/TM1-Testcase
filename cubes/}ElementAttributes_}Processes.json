@@ -10,8 +10,5 @@
 			"@id":"Dimensions('}ElementAttributes_}Processes')"
 		}
 	],
-	"Views@Code.links":
-	[
-		"}ElementAttributes_}Processes.views/Default.json"
-	]
+	"Views@Code.links":[]
 }
