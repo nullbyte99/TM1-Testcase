@@ -22,12 +22,6 @@
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"
-		},
-		{
-			"Name":"pIncludeSecurity",
-			"Prompt":"",
-			"Value":"Y",
-			"Type":"String"
 		}
 	],
 	"Variables":

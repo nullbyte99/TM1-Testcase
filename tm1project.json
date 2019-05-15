@@ -9,8 +9,7 @@
         },
         "ExportData":
         {
-            "Process": "Processes('}src_sync')",
-            "Parameters": [ { "Name": "op", "Value": "0" } ]
+            "Process": "Processes('Git.ExportAll')"
         }
     },
     "PostPull":
@@ -23,8 +22,7 @@
     ],
     "Files":
     [
-        "}Externals/*",
-        "}sync_data/*"     
+        "}GitExport/*"     
     ],
     "Ignore":
     [
@@ -32,8 +30,6 @@
     	"!Cubes('}ElementAttributes_}Processes')",
 		"Cubes('ExportTest')",
 		"Cubes('MyCube')",
-        "!Processes('}src_exp_attrs')",
-        "!Processes('}src_exp_cube')",
         "!Processes('}src_imp_attrs')",
         "!Processes('}src_imp_cube')",
         "!Processes('}src_sync')"

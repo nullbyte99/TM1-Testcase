@@ -1,24 +1,24 @@
 {
 	"@type":"Process",
-	"Name":"}src_exp_cube",
-	"Code@Code.link":"}src_exp_cube.ti",
+	"Name":"Git.ExportCube",
+	"Code@Code.link":"Git.ExportCube.ti",
 	"DataSource":
 	{
 		"Type":"TM1CubeView",
-		"dataSourceNameForClient":"}dummy_cube",
-		"dataSourceNameForServer":"}dummy_cube",
-		"view":"}dummy_view"
+		"dataSourceNameForClient":"diag.dummy.cube",
+		"dataSourceNameForServer":"diag.dummy.cube",
+		"view":"Default"
 	},
 	"Parameters":
 	[
 		{
-			"Name":"cube_name",
-			"Prompt":"",
-			"Value":"",
+			"Name":"pCubeName",
+			"Prompt":"Name of cube to populate",
+			"Value":"}ElementAttributes_plan_department",
 			"Type":"String"
 		},
 		{
-			"Name":"data_dir",
+			"Name":"pOutputDirectory",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"
@@ -27,114 +27,128 @@
 	"Variables":
 	[
 		{
-			"Name":"v1",
+			"Name":"dim1",
 			"Type":"String",
 			"Position":1,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v2",
+			"Name":"dim2",
 			"Type":"String",
 			"Position":2,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v3",
+			"Name":"dim3",
 			"Type":"String",
 			"Position":3,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v4",
+			"Name":"dim4",
 			"Type":"String",
 			"Position":4,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v5",
+			"Name":"dim5",
 			"Type":"String",
 			"Position":5,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v6",
+			"Name":"dim6",
 			"Type":"String",
 			"Position":6,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v7",
+			"Name":"dim7",
 			"Type":"String",
 			"Position":7,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v8",
+			"Name":"dim8",
 			"Type":"String",
 			"Position":8,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v9",
+			"Name":"dim9",
 			"Type":"String",
 			"Position":9,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v10",
+			"Name":"dim10",
 			"Type":"String",
 			"Position":10,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v11",
+			"Name":"dim11",
 			"Type":"String",
 			"Position":11,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v12",
+			"Name":"dim12",
 			"Type":"String",
 			"Position":12,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v13",
+			"Name":"dim13",
 			"Type":"String",
 			"Position":13,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v14",
+			"Name":"dim14",
 			"Type":"String",
 			"Position":14,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v15",
+			"Name":"dim15",
 			"Type":"String",
 			"Position":15,
 			"StartByte":0,
 			"EndByte":0
 		},
 		{
-			"Name":"v16",
+			"Name":"dim16",
 			"Type":"String",
 			"Position":16,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"dim17",
+			"Type":"String",
+			"Position":17,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"dim18",
+			"Type":"String",
+			"Position":18,
 			"StartByte":0,
 			"EndByte":0
 		}

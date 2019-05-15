@@ -3,7 +3,7 @@
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-file_name = data_dir|'attributes.csv';
+file_name = pOutputDirectory | 'attributes.csv';
 
 dimension_ctrl_dimension = '}Dimensions';
 element_count = DIMSIZ(dimension_ctrl_dimension);
@@ -26,4 +26,19 @@ WHILE(element_index <= element_count);
   ENDIF;
   element_index = element_index + 1;
 END;
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
 #endregion

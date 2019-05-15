@@ -1,7 +1,7 @@
 {
 	"@type":"Process",
-	"Name":"}src_exp_attrs",
-	"Code@Code.link":"}src_exp_attrs.ti",
+	"Name":"Git.ExportAttributes",
+	"Code@Code.link":"Git.ExportAttributes.ti",
 	"DataSource":
 	{
 		"Type":"None"
@@ -9,7 +9,7 @@
 	"Parameters":
 	[
 		{
-			"Name":"data_dir",
+			"Name":"pOutputDirectory",
 			"Prompt":"",
 			"Value":"",
 			"Type":"String"

@@ -1,0 +1,8 @@
+﻿platform	value	WIN
+install directory	value	C:\PASupport\2x0x4\tm1_64\
+model directory	value	D:\stuart\models\Testcase\
+user	value	admin
+password	value	apple
+model name	value	Testcase
+adminhost	value	vottstuartpa.canlab.ibm.com
+last export	value	D:\stuart\models\Testcase\export\

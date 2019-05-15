@@ -1,0 +1,119 @@
+#region Prolog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+###################################
+#   Created By Stuart King.                                    
+#   IBM Planning Analyics Offering Manager         
+#   stuart.king@ca.ibm.com
+#   December 2018
+###################################
+
+vSlash = CELLGETS ( 'diag.control.cube', 'slash', 'value' ) ;
+cubeExportFile = pOutputDirectory | pCubeName | '.cube';
+
+LOGOUTPUT ( 'INFO', 'Exporting Cube ' | pCubeName );
+
+sourceViewName = '}' | pCubeName | TIMST ( NOW, '\Y\m\d\h\i\s' );
+IF ( ViewExists ( pCubeName, sourceViewName ) = 0);
+   ViewCreate ( pCubeName, sourceViewName, 1 );
+ENDIF;
+
+
+
+i = 1;
+dimensionName = TABDIM ( pCubeName, i );
+WHILE ( dimensionName @<> '' );
+   dimensionName = TABDIM ( pCubeName, i );
+   ViewRowDimensionSet ( pCubeName, sourceViewName, dimensionName, i );
+
+   subsetName = dimensionName | TIMST ( NOW, '\Y\m\d\h\i\s' );
+   IF (SubsetExists ( dimensionName, subsetName ) = 0 );
+      SubsetCreate ( dimensionName, subsetName, 1 );
+   ENDIF;
+   j = 1;
+   WHILE ( j <= DIMSIZ ( dimensionName ) );
+      currentElement = DIMNM ( dimensionName, j );
+      IF ( ELLEV ( dimensionName, currentElement ) = 0 );
+         SubsetElementInsert (  dimensionName, subsetName, currentElement, SubsetGetSize ( dimensionName, subsetName ) + 1 );
+      ELSEIF ( SCAN ( '}ElementAttributes_', pCubeName ) = 1 % SCAN ( '}ElementSecurity_', pCubeName ) = 1 % SCAN ( '}CellSecurity_', pCubeName ) = 1 );
+         SubsetElementInsert (  dimensionName, subsetName, currentElement, SubsetGetSize ( dimensionName, subsetName ) + 1 );
+      ENDIF;
+      j = j + 1;
+   END; 
+   ViewSubsetAssign ( pCubeName, sourceViewName, dimensionName, subsetName );
+   i = i + 1;
+   dimensionName = TABDIM ( pCubeName, i ); 
+END;
+
+dimensionCount = i - 1;
+
+
+
+ViewConstruct ( pCubeName, sourceViewName );
+DataSourceType='VIEW';
+DatasourceASCIIDelimiter=Char(9);
+DatasourceASCIIQuoteCharacter='';
+DatasourceNameForServer=pCubeName;
+DatasourceCubeview=sourceViewName;
+
+#ViewExtractSkipZeroesSet ( pCubeName, sourceViewName, 0 );
+ViewExtractSkipCalcsSet ( pCubeName, sourceViewName, 1 );
+ViewExtractSkipRuleValuesSet ( pCubeName, sourceViewName, 1 );
+#ViewExtractSkipConsolidatedStringsSet ( pCubeName, sourceViewName, 0 );
+#endregion
+#region Metadata
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+#endregion
+#region Data
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+SetOutputCharacterSet( cubeExportFile, 'TM1CS_UTF8' );
+
+IF ( dimensionCount = 2 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3 );
+ELSEIF ( dimensionCount = 3 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4 );
+ELSEIF ( dimensionCount = 4 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5 );
+ELSEIF ( dimensionCount = 5 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6 );
+ELSEIF ( dimensionCount = 6 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7 );
+ELSEIF ( dimensionCount = 7 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8 );
+ELSEIF ( dimensionCount = 8 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9 );
+ELSEIF ( dimensionCount = 9 );
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10 );
+ELSEIF ( dimensionCount = 10);
+   TEXTOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11 );
+ELSEIF ( dimensionCount = 11 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12 );
+ELSEIF ( dimensionCount = 12 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13 );
+ELSEIF ( dimensionCount = 13 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14 );
+ELSEIF ( dimensionCount = 14);
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15 );
+ELSEIF ( dimensionCount = 15 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16 );
+ELSEIF ( dimensionCount = 16 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17 );
+ELSEIF ( dimensionCount = 17 );
+   ASCIIOUTPUT ( cubeExportFile, dim1, dim2, dim3, dim4, dim5, dim6, dim7, dim8, dim9, dim10, dim11, dim12, dim13, dim14, dim15, dim16, dim17, dim18 );
+ENDIF;
+#endregion
+#region Epilog
+
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+
+#endregion

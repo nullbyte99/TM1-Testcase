@@ -1,0 +1,11 @@
+{
+	"@type":"Process",
+	"Name":"Git.ExportAll",
+	"Code@Code.link":"Git.ExportAll.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":[],
+	"Variables":[]
+}
